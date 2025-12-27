@@ -1,112 +1,417 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Специализированная школа №37 — Самарканд</title>
-  <style>
-    :root { --w: 1040px; }
-    body { margin:0; font-family: Arial, sans-serif; line-height:1.6; color:#111; }
-    header { padding:56px 20px; border-bottom:1px solid #e6e6e6; }
-    .wrap { max-width: var(--w); margin:0 auto; }
-    h1 { margin:0 0 8px; font-size:32px; }
-    .sub { color:#444; margin:0; }
-    nav { position:sticky; top:0; background:#fff; border-bottom:1px solid #eee; }
-    nav a { display:inline-block; padding:12px 14px; color:#111; text-decoration:none; }
-    nav a:hover { text-decoration:underline; }
-    section { padding:36px 20px; }
-    .grid { display:grid; gap:18px; grid-template-columns: 1.2fr 0.8fr; }
-    @media (max-width: 860px){ .grid{ grid-template-columns:1fr; } }
-    .card { border:1px solid #eee; border-radius:10px; padding:18px; }
-    ul { padding-left:18px; margin:10px 0 0; }
-    .btn { display:inline-block; padding:10px 14px; border:1px solid #111; border-radius:10px; text-decoration:none; color:#111; }
-    .btn:hover { background:#111; color:#fff; }
-    footer { padding:26px 20px; border-top:1px solid #e6e6e6; color:#444; }
-    small { color:#666; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specialized School #37 - Samarkand | Excellence in Education</title>
+    <meta name="description" content="Specialized School #37 in Samarkand - One of the oldest and most prestigious schools in Uzbekistan, founded in 1936. Excellence in English language education with strong academic achievements.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    
+    <style>
+        :root {
+            --terracotta: #D2691E;
+            --teal: #2F4F4F;
+            --amber: #FFB347;
+            --cream: #FDF5E6;
+            --charcoal: #36454F;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+        }
+        
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-accent { font-family: 'Crimson Text', serif; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--amber) 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--terracotta), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(210, 105, 30, 0.2);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .stats-counter {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--terracotta);
+        }
+        
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .nav-sticky {
+            backdrop-filter: blur(10px);
+            background: rgba(253, 245, 230, 0.95);
+        }
+        
+        .achievement-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(210, 105, 30, 0.1);
+        }
+        
+        .achievement-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(210, 105, 30, 0.15);
+        }
+        
+        .splide__arrow {
+            background: var(--terracotta) !important;
+            opacity: 0.8;
+        }
+        
+        .splide__arrow:hover {
+            opacity: 1;
+        }
+        
+        .animate-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .animate-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-    <div class="wrap">
-      <h1>Специализированная школа №37</h1>
-      <p class="sub">Самарканд, Узбекистан • Официальная страница школы</p>
-    </div>
-  </header>
-
-  <nav>
-    <div class="wrap">
-      <a href="#about">О школе</a>
-      <a href="#docs">Документы</a>
-      <a href="#contacts">Контакты</a>
-    </div>
-  </nav>
-
-  <main>
-    <section id="about">
-      <div class="wrap grid">
-        <div class="card">
-          <h2>О школе</h2>
-          <p>
-            Короткое описание школы (1–3 абзаца). Можно указать профиль, достижения,
-            направления, расписание приёма и т.д.
-          </p>
-          <p>
-            <a class="btn" href="#contacts">Связаться</a>
-          </p>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-sticky border-b border-orange-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-display font-bold text-gradient">School #37</div>
+                    <div class="ml-3 text-sm text-gray-600">Samarkand</div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-orange-600 font-medium hover:text-orange-700 transition-colors">Home</a>
+                        <a href="about.html" class="text-gray-700 hover:text-orange-600 transition-colors">About</a>
+                        <a href="achievements.html" class="text-gray-700 hover:text-orange-600 transition-colors">Achievements</a>
+                        <a href="contact.html" class="text-gray-700 hover:text-orange-600 transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-700 hover:text-orange-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
+    </nav>
 
-        <div class="card">
-          <h3>Быстро</h3>
-          <ul>
-            <li>Адрес: Makhmud Koshgari 61, Samarkand</li>
-            <li>Язык сайта: RU / EN (можно добавить вторую версию)</li>
-            <li>Новости: можно сделать отдельным блоком</li>
-          </ul>
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="floating-particles" id="particles"></div>
+        
+        <div class="absolute inset-0 z-0">
+            <img src="resources/hero-school.jpg" alt="School #37 Building" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
         </div>
-      </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in">
+                <h1 class="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight">
+                    Specialized School
+                    <span class="block text-gradient bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent">#37</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto font-light">
+                    Excellence in Education Since 1936<br>
+                    <span class="text-amber-300">Samarkand, Uzbekistan</span>
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="about.html" class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg">
+                        Discover Our Story
+                    </a>
+                    <a href="achievements.html" class="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-4 rounded-full font-semibold transition-all border border-white/30">
+                        View Achievements
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
     </section>
 
-    <section id="docs">
-      <div class="wrap">
-        <div class="card">
-          <h2>Документы и файлы</h2>
-          <p>Загрузите файлы в папку <strong>/files</strong> в репозитории и добавьте ссылки ниже.</p>
-          <ul>
-            <li><a href="/files/School-Profile.pdf" download>Профиль школы (PDF)</a></li>
-            <li><a href="/files/transcripts/Abdukhafizov.Abdulaziz-student-final-grade.pdf" target="_blank" rel="noopener">Шаблон справки/транскрипта (PDF)</a></li>
-            <li><a href="#">Информация о приёме (PDF)</a></li>
-          </ul>
-          <p><small>Подсказка: имя файла в ссылке должно совпадать 1:1 с загруженным файлом.</small></p>
+    <!-- Statistics Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Our Legacy by Numbers</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Decades of excellence in education, shaping the future of Uzbekistan</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center animate-fade-in">
+                    <div class="stats-counter" data-target="1936">0</div>
+                    <p class="text-gray-600 font-medium">Founded</p>
+                </div>
+                <div class="text-center animate-fade-in">
+                    <div class="stats-counter" data-target="1514">0</div>
+                    <p class="text-gray-600 font-medium">Students</p>
+                </div>
+                <div class="text-center animate-fade-in">
+                    <div class="stats-counter" data-target="86">0</div>
+                    <p class="text-gray-600 font-medium">Teachers</p>
+                </div>
+                <div class="text-center animate-fade-in">
+                    <div class="stats-counter" data-target="46">0</div>
+                    <p class="text-gray-600 font-medium">2022 Graduates</p>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
-    <section id="contacts">
-      <div class="wrap">
-        <div class="card">
-          <h2>Контакты</h2>
-          <p><strong>Адрес:</strong> Makhmud Koshgari 61, Samarkand city, Uzbekistan</p>
-          <p><strong>Email:</strong> (добавьте официальный email школы)</p>
-          <p><strong>Телефон:</strong> (по желанию)</p>
-
-          <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
-
-          <h3>Форма (простой вариант)</h3>
-          <p>
-            Для настоящей формы отправки сообщений нужен отдельный сервис (например Formspree/Google Forms).
-            Пока можно поставить кнопку на Google Form.
-          </p>
-          <p><a class="btn" href="#" target="_blank" rel="noopener">Открыть форму обращения</a></p>
+    <!-- Video Gallery Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Experience Our School</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Watch our students and teachers in action, showcasing the vibrant life at School #37</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Main Video Player -->
+                <div class="lg:col-span-2 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                        <div class="video-container">
+                            <iframe id="main-video" src="https://www.youtube.com/embed/yxj-boIhz1Q" 
+                                    title="School #37 Video" frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <h3 id="video-title" class="text-2xl font-semibold text-gray-900 mb-2">School #37 Overview</h3>
+                            <p id="video-description" class="text-gray-600">Discover our prestigious school, established in 1936, with a strong curriculum specialized in English language education.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video Playlist -->
+                <div class="animate-fade-in">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Video Gallery</h3>
+                    <div class="space-y-4">
+                        <div class="video-item bg-white rounded-xl p-4 shadow-lg cursor-pointer card-hover active" data-video="yxj-boIhz1Q" data-title="School #37 Overview" data-description="Discover our prestigious school, established in 1936, with a strong curriculum specialized in English language education.">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 h-12 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">School Overview</h4>
+                                    <p class="text-sm text-gray-500">3:47 duration</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="video-item bg-white rounded-xl p-4 shadow-lg cursor-pointer card-hover" data-video="nFGSkErEz74" data-title="Traditional School Opening" data-description="Experience the traditional school opening ceremony and see our students beginning their academic journey.">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 h-12 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">School Opening</h4>
+                                    <p class="text-sm text-gray-500">4:38 duration</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="wrap">
-      <small>© Специализированная школа №37 • Обновлено: 2025</small>
-    </div>
-  </footer>
+    <!-- Featured Achievements -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Student Excellence</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Our students consistently achieve remarkable success in academics, sports, and international programs</p>
+            </div>
+            
+            <div class="splide" id="achievements-slider">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="achievement-card mx-4">
+                                <img src="resources/students-achievement.jpg" alt="FLEX Finalists" class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">FLEX Finalists</h3>
+                                    <p class="text-gray-600 mb-4">Our students selected for the prestigious Future Leaders Exchange Program</p>
+                                    <div class="flex items-center text-orange-600 font-semibold">
+                                        <span>2023 & 2024 Finalists</span>
+                                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="achievement-card mx-4">
+                                <img src="resources/graduation.jpg" alt="University Admissions" class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">University Success</h3>
+                                    <p class="text-gray-600 mb-4">46 graduates accepted to top universities in USA, UK, Korea, and Uzbekistan</p>
+                                    <div class="flex items-center text-orange-600 font-semibold">
+                                        <span>2022 Graduates</span>
+                                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="achievement-card mx-4">
+                                <img src="resources/classroom.jpg" alt="IELTS Success" class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">IELTS Excellence</h3>
+                                    <p class="text-gray-600 mb-4">Students achieving outstanding IELTS scores of 8.0 and 7.5</p>
+                                    <div class="flex items-center text-orange-600 font-semibold">
+                                        <span>Top Scores: 8.0 & 7.5</span>
+                                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="achievement-card mx-4">
+                                <img src="resources/sports.jpg" alt="Sports Champions" class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Sports Champions</h3>
+                                    <p class="text-gray-600 mb-4">Excellence in chess, basketball, soccer, and volleyball competitions</p>
+                                    <div class="flex items-center text-orange-600 font-semibold">
+                                        <span>Regional Champions</span>
+                                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Statement -->
+    <section class="py-20 hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-white mb-8">Our Mission</h2>
+                <blockquote class="text-2xl md:text-3xl font-accent italic text-white/90 max-w-4xl mx-auto leading-relaxed">
+                    "We foster our students' love for learning, encourage them to try new and exciting things, and give them a solid foundation to build on. Our vision is to develop well-rounded, confident, and responsible individuals who aspire to achieve their full potential."
+                </blockquote>
+                <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="about.html" class="bg-white text-orange-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105">
+                        Learn More About Us
+                    </a>
+                    <a href="contact.html" class="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-all border border-white/30">
+                        Schedule a Visit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="text-2xl font-display font-bold text-orange-400 mb-4">School #37</div>
+                    <p class="text-gray-300 mb-4">Specialized School #37 in Samarkand - Excellence in education since 1936.</p>
+                    <p class="text-gray-400 text-sm">Makhmud Koshgari 61, Samarkand, Uzbekistan</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-300 hover:text-orange-400 transition-colors">About School</a></li>
+                        <li><a href="achievements.html" class="text-gray-300 hover:text-orange-400 transition-colors">Achievements</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-orange-400 transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+                    <div class="space-y-2 text-gray-300">
+                        <p>Phone: +998 (97) 921-85-04</p>
+                        <p>Email: nigina.mukhsinova@school-37.com</p>
+                        <p>Principal: +998 (91) 557-29-47</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Specialized School #37, Samarkand. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About School #37 - Samarkand | Our History & Mission</title>
+    <meta name="description" content="Learn about Specialized School #37 in Samarkand - Our history since 1936, mission, facilities, and dedicated staff committed to educational excellence.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    
+    <style>
+        :root {
+            --terracotta: #D2691E;
+            --teal: #2F4F4F;
+            --amber: #FFB347;
+            --cream: #FDF5E6;
+            --charcoal: #36454F;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+        }
+        
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-accent { font-family: 'Crimson Text', serif; }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--terracotta), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-sticky {
+            backdrop-filter: blur(10px);
+            background: rgba(253, 245, 230, 0.95);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--terracotta);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--terracotta);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: linear-gradient(to bottom, var(--terracotta), transparent);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .facility-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .facility-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(210, 105, 30, 0.15);
+            border-color: var(--terracotta);
+        }
+        
+        .facility-card.active {
+            border-color: var(--terracotta);
+            box-shadow: 0 15px 30px rgba(210, 105, 30, 0.2);
+        }
+        
+        .staff-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(210, 105, 30, 0.1);
+        }
+        
+        .staff-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(210, 105, 30, 0.1);
+        }
+        
+        .staff-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            border: 4px solid var(--amber);
+        }
+        
+        .animate-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .animate-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+        
+        .facility-detail {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .facility-detail.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .curriculum-tab {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            background: white;
+            border: 2px solid var(--terracotta);
+            color: var(--terracotta);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .curriculum-tab:hover,
+        .curriculum-tab.active {
+            background: var(--terracotta);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-sticky border-b border-orange-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-display font-bold text-gradient">School #37</div>
+                    <div class="ml-3 text-sm text-gray-600">Samarkand</div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
+                        <a href="about.html" class="text-orange-600 font-medium hover:text-orange-700 transition-colors">About</a>
+                        <a href="achievements.html" class="text-gray-700 hover:text-orange-600 transition-colors">Achievements</a>
+                        <a href="contact.html" class="text-gray-700 hover:text-orange-600 transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-700 hover:text-orange-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 bg-gradient-to-br from-orange-50 to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center animate-fade-in">
+                <h1 class="text-5xl md:text-6xl font-display font-bold text-gray-900 mb-6">
+                    About <span class="text-gradient">School #37</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                    Founded in 1936, we are one of the oldest and most prestigious schools in Samarkand, 
+                    dedicated to providing excellence in education with a specialized focus on English language learning.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- School History Timeline -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Our Journey Through Time</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Eight decades of educational excellence and community service</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="timeline-item animate-fade-in">
+                    <div class="bg-orange-50 rounded-xl p-6">
+                        <h3 class="text-2xl font-display font-bold text-orange-600 mb-2">1936</h3>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">Foundation</h4>
+                        <p class="text-gray-600">School #37 was established in the heart of Samarkand, becoming one of the first specialized educational institutions in the region. Built with a vision to provide quality education to the community.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item animate-fade-in">
+                    <div class="bg-teal-50 rounded-xl p-6">
+                        <h3 class="text-2xl font-display font-bold text-teal-600 mb-2">1960s-1980s</h3>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">Growth & Development</h4>
+                        <p class="text-gray-600">The school expanded its facilities and curriculum, establishing itself as a leading educational institution. New buildings were added and the student population grew significantly.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item animate-fade-in">
+                    <div class="bg-amber-50 rounded-xl p-6">
+                        <h3 class="text-2xl font-display font-bold text-amber-600 mb-2">1990s</h3>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">Independence Era</h4>
+                        <p class="text-gray-600">Following Uzbekistan's independence, the school adapted to new educational standards while maintaining its commitment to excellence. English language specialization was strengthened.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item animate-fade-in">
+                    <div class="bg-orange-50 rounded-xl p-6">
+                        <h3 class="text-2xl font-display font-bold text-orange-600 mb-2">2000s-Present</h3>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-3">Modern Excellence</h4>
+                        <p class="text-gray-600">Embracing modern educational technologies and methodologies, School #37 continues to produce outstanding graduates who attend top universities worldwide.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="py-20 bg-gradient-to-br from-orange-50 to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in">
+                    <img src="resources/principal.jpg" alt="School Principal" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto">
+                </div>
+                <div class="animate-fade-in">
+                    <h2 class="text-4xl font-display font-bold text-gray-900 mb-8">Our Mission & Vision</h2>
+                    
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-orange-600 mb-4">Mission</h3>
+                            <p class="text-lg text-gray-600 leading-relaxed">
+                                We foster our students' love for learning, encourage them to try new and exciting things, 
+                                and give them a solid foundation to build on. Our vision is to develop well-rounded, 
+                                confident, and responsible individuals who aspire to achieve their full potential.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-2xl font-semibold text-teal-600 mb-4">Vision</h3>
+                            <p class="text-lg text-gray-600 leading-relaxed">
+                                We will do this by providing a welcoming, happy, safe, and supportive learning environment 
+                                in which everyone is equal and all achievements are celebrated. We believe that a happy child is a successful one.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <blockquote class="text-xl font-accent italic text-gray-700">
+                                "We are committed to providing a positive, safe and stimulating environment for children to learn, 
+                                where all are valued. We intend that all children should enjoy their learning, achieve their potential 
+                                and become independent lifelong learners."
+                            </blockquote>
+                            <cite class="block mt-4 text-orange-600 font-semibold">— Akramova Zamira Makhmudovna, Principal</cite>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Facilities Tour -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Our Facilities</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Explore our modern facilities designed for 21st-century learning</p>
+            </div>
+            
+            <!-- Facility Categories -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in">
+                <button class="facility-tab curriculum-tab active" data-facility="classrooms">Modern Classrooms</button>
+                <button class="facility-tab curriculum-tab" data-facility="library">Library & Resource Center</button>
+                <button class="facility-tab curriculum-tab" data-facility="science">Science Laboratories</button>
+                <button class="facility-tab curriculum-tab" data-facility="sports">Sports Facilities</button>
+                <button class="facility-tab curriculum-tab" data-facility="arts">Arts & Music Studios</button>
+            </div>
+            
+            <!-- Facility Details -->
+            <div class="facility-detail active" id="classrooms">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="resources/classroom.jpg" alt="Modern Classroom" class="rounded-2xl shadow-xl w-full">
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Modern Classrooms</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Our classrooms are equipped with the latest educational technology, including interactive whiteboards, 
+                            multimedia systems, and comfortable seating arrangements that promote collaborative learning.
+                        </p>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Interactive smart boards and projectors
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                High-speed internet connectivity
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Flexible seating for group work
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Climate control and natural lighting
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="facility-detail" id="library">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="resources/library-modern.jpg" alt="School Library" class="rounded-2xl shadow-xl w-full">
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Library & Resource Center</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Our comprehensive library houses thousands of books, digital resources, and study materials. 
+                            It's a quiet haven for learning and research, supporting students in their academic journey.
+                        </p>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Over 10,000 books and periodicals
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Digital research databases
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Quiet study areas and reading rooms
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Computer workstations for research
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="facility-detail" id="science">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="resources/science.jpg" alt="Science Lab" class="rounded-2xl shadow-xl w-full">
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Science Laboratories</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Our state-of-the-art science labs provide hands-on learning experiences in physics, chemistry, and biology. 
+                            Students conduct experiments and develop scientific thinking in a safe, modern environment.
+                        </p>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Modern laboratory equipment
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Safety equipment and protocols
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Specialized subject labs
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Digital microscopes and sensors
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="facility-detail" id="sports">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="resources/sports.jpg" alt="Sports Facilities" class="rounded-2xl shadow-xl w-full">
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Sports Facilities</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Our comprehensive sports facilities encourage physical fitness and teamwork. From traditional sports 
+                            to specialized activities, students have ample opportunities to develop their athletic abilities.
+                        </p>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Multi-purpose sports hall
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Basketball and volleyball courts
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Soccer field and running track
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Chess club and training room
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="facility-detail" id="arts">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="resources/library.jpg" alt="Arts Studio" class="rounded-2xl shadow-xl w-full">
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Arts & Music Studios</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Our creative spaces nurture artistic talent and musical abilities. Students explore their creativity 
+                            through various mediums, developing their artistic expression and appreciation for the arts.
+                        </p>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Art studio with professional equipment
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Music practice rooms and instruments
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Performance auditorium
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Digital media and design lab
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staff Directory -->
+    <section class="py-20 bg-gradient-to-br from-teal-50 to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Our Leadership Team</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Dedicated professionals committed to educational excellence</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="staff-card animate-fade-in">
+                    <img src="resources/principal.jpg" alt="Principal" class="staff-avatar">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Akramova Zamira</h3>
+                    <p class="text-orange-600 font-medium mb-3">School Principal</p>
+                    <p class="text-sm text-gray-600 mb-4">Leading our school with vision and dedication to educational excellence.</p>
+                    <div class="text-sm text-gray-500">
+                        <p>+998 (91) 557-29-47</p>
+                        <p>zamira.akramova@school-37.com</p>
+                    </div>
+                </div>
+                
+                <div class="staff-card animate-fade-in">
+                    <img src="resources/teacher-female.jpg" alt="Counselor" class="staff-avatar">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mukhsinova Nigina</h3>
+                    <p class="text-orange-600 font-medium mb-3">School Counselor</p>
+                    <p class="text-sm text-gray-600 mb-4">Supporting students' academic and personal development journey.</p>
+                    <div class="text-sm text-gray-500">
+                        <p>+998 (97) 921-85-04</p>
+                        <p>nigina.mukhsinova@school-37.com</p>
+                    </div>
+                </div>
+                
+                <div class="staff-card animate-fade-in">
+                    <img src="resources/teacher-male.jpg" alt="Head Teacher" class="staff-avatar">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Sharipova Umeda</h3>
+                    <p class="text-orange-600 font-medium mb-3">Head Teacher</p>
+                    <p class="text-sm text-gray-600 mb-4">Overseeing curriculum implementation and academic standards.</p>
+                    <div class="text-sm text-gray-500">
+                        <p>+998 (97) 921-53-48</p>
+                    </div>
+                </div>
+                
+                <div class="staff-card animate-fade-in">
+                    <img src="resources/teacher-female.jpg" alt="Head Teacher" class="staff-avatar">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Ugryumova Natalya</h3>
+                    <p class="text-orange-600 font-medium mb-3">Head Teacher</p>
+                    <p class="text-sm text-gray-600 mb-4">Coordinating educational programs and student activities.</p>
+                    <div class="text-sm text-gray-500">
+                        <p>+998 (90) 505-51-38</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- School Statistics -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">School Profile</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Comprehensive overview of our school community</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Student Demographics</h3>
+                    <div id="demographics-chart" style="height: 300px;"></div>
+                </div>
+                
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Academic Programs</h3>
+                    <div class="space-y-6">
+                        <div class="bg-orange-50 rounded-xl p-6">
+                            <h4 class="text-lg font-semibold text-orange-600 mb-3">Languages of Instruction</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">Uzbek</span>
+                                <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">Russian</span>
+                                <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">English</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-teal-50 rounded-xl p-6">
+                            <h4 class="text-lg font-semibold text-teal-600 mb-3">Specialized Programs</h4>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 text-teal-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    English Language Specialization
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 text-teal-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    STEAM Education Focus
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 text-teal-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    International Exchange Programs
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 text-teal-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    PISA Preparation Program
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="text-2xl font-display font-bold text-orange-400 mb-4">School #37</div>
+                    <p class="text-gray-300 mb-4">Specialized School #37 in Samarkand - Excellence in education since 1936.</p>
+                    <p class="text-gray-400 text-sm">Makhmud Koshgari 61, Samarkand, Uzbekistan</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-orange-400 hover:text-orange-300 transition-colors">About School</a></li>
+                        <li><a href="achievements.html" class="text-gray-300 hover:text-orange-400 transition-colors">Achievements</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-orange-400 transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+                    <div class="space-y-2 text-gray-300">
+                        <p>Phone: +998 (97) 921-85-04</p>
+                        <p>Email: nigina.mukhsinova@school-37.com</p>
+                        <p>Principal: +998 (91) 557-29-47</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Specialized School #37, Samarkand. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Initialize about page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initFacilityTabs();
+            initDemographicsChart();
+        });
+
+        function initFacilityTabs() {
+            const tabs = document.querySelectorAll('.facility-tab');
+            const details = document.querySelectorAll('.facility-detail');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const facility = this.getAttribute('data-facility');
+                    
+                    // Remove active class from all tabs and details
+                    tabs.forEach(t => t.classList.remove('active'));
+                    details.forEach(d => d.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding detail
+                    this.classList.add('active');
+                    document.getElementById(facility).classList.add('active');
+                });
+            });
+        }
+
+        function initDemographicsChart() {
+            const chartDom = document.getElementById('demographics-chart');
+            if (!chartDom) return;
+            
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: {
+                        color: '#36454F'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Student Gender',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            { value: 800, name: 'Male Students', itemStyle: { color: '#D2691E' } },
+                            { value: 714, name: 'Female Students', itemStyle: { color: '#FFB347' } }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+            
+            // Responsive chart
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Achievements - School #37 Samarkand | Excellence in Education</title>
+    <meta name="description" content="Explore the outstanding achievements of School #37 students - FLEX finalists, IELTS success, university admissions, and academic excellence in Samarkand.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    
+    <style>
+        :root {
+            --terracotta: #D2691E;
+            --teal: #2F4F4F;
+            --amber: #FFB347;
+            --cream: #FDF5E6;
+            --charcoal: #36454F;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+        }
+        
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-accent { font-family: 'Crimson Text', serif; }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--terracotta), var(--amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-sticky {
+            backdrop-filter: blur(10px);
+            background: rgba(253, 245, 230, 0.95);
+        }
+        
+        .achievement-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(210, 105, 30, 0.1);
+            cursor: pointer;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(210, 105, 30, 0.15);
+            border-color: var(--terracotta);
+        }
+        
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: white;
+            border: 2px solid var(--terracotta);
+            color: var(--terracotta);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--terracotta);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(210, 105, 30, 0.1);
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(210, 105, 30, 0.1);
+        }
+        
+        .stats-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--terracotta);
+            line-height: 1;
+        }
+        
+        .animate-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .animate-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(210, 105, 30, 0.1);
+            border-left: 4px solid var(--terracotta);
+        }
+        
+        .student-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--amber);
+        }
+        
+        .achievement-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--terracotta), var(--amber));
+            color: white;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .university-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--terracotta);
+            border: 2px solid var(--terracotta);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-sticky border-b border-orange-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-display font-bold text-gradient">School #37</div>
+                    <div class="ml-3 text-sm text-gray-600">Samarkand</div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
+                        <a href="about.html" class="text-gray-700 hover:text-orange-600 transition-colors">About</a>
+                        <a href="achievements.html" class="text-orange-600 font-medium hover:text-orange-700 transition-colors">Achievements</a>
+                        <a href="contact.html" class="text-gray-700 hover:text-orange-600 transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-700 hover:text-orange-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 bg-gradient-to-br from-orange-50 to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center animate-fade-in">
+                <h1 class="text-5xl md:text-6xl font-display font-bold text-gray-900 mb-6">
+                    Student <span class="text-gradient">Excellence</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                    Celebrating the remarkable achievements of our students in academics, sports, 
+                    and international programs. Our graduates continue to excel at top universities worldwide.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievement Statistics -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Achievement Highlights</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Outstanding results that showcase our commitment to excellence</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="stats-card animate-fade-in">
+                    <div class="stats-number" data-target="46">0</div>
+                    <p class="text-gray-600 font-medium text-lg">2022 Graduates</p>
+                    <p class="text-sm text-gray-500 mt-2">Accepted to top universities</p>
+                </div>
+                <div class="stats-card animate-fade-in">
+                    <div class="stats-number" data-target="8">0</div>
+                    <p class="text-gray-600 font-medium text-lg">FLEX Finalists</p>
+                    <p class="text-sm text-gray-500 mt-2">2023 & 2024</p>
+                </div>
+                <div class="stats-card animate-fade-in">
+                    <div class="stats-number" data-target="11">0</div>
+                    <p class="text-gray-600 font-medium text-lg">Foreign Universities</p>
+                    <p class="text-sm text-gray-500 mt-2">Acceptances</p>
+                </div>
+                <div class="stats-card animate-fade-in">
+                    <div class="stats-number" data-target="8">0</div>
+                    <p class="text-gray-600 font-medium text-lg">IELTS Score</p>
+                    <p class="text-sm text-gray-500 mt-2">Highest achieved</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievement Filter & Gallery -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Student Success Stories</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Explore achievements by category</p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in">
+                <button class="filter-btn active" data-filter="all">All Achievements</button>
+                <button class="filter-btn" data-filter="academic">Academic</button>
+                <button class="filter-btn" data-filter="international">International</button>
+                <button class="filter-btn" data-filter="sports">Sports</button>
+                <button class="filter-btn" data-filter="arts">Arts</button>
+            </div>
+            
+            <!-- Achievement Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="achievements-grid">
+                <!-- Academic Achievements -->
+                <div class="achievement-card animate-fade-in" data-category="academic international">
+                    <img src="resources/students-achievement.jpg" alt="FLEX Finalists" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">FLEX Program</span>
+                            <span class="achievement-badge">International</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">FLEX Finalists 2023 & 2024</h3>
+                        <p class="text-gray-600 mb-4">Our students have been selected for the prestigious Future Leaders Exchange Program, representing Uzbekistan in the United States.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2023-2024</span>
+                            <span class="text-orange-600 font-semibold">8 Finalists</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievement-card animate-fade-in" data-category="academic international">
+                    <img src="resources/classroom.jpg" alt="IELTS Success" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">IELTS</span>
+                            <span class="achievement-badge">Academic</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Outstanding IELTS Results</h3>
+                        <p class="text-gray-600 mb-4">Students achieving exceptional scores of 8.0 and 7.5, demonstrating advanced English proficiency for university admissions.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2022-2023</span>
+                            <span class="text-orange-600 font-semibold">Top Score: 8.0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievement-card animate-fade-in" data-category="academic international">
+                    <img src="resources/graduation.jpg" alt="University Admissions" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">University</span>
+                            <span class="achievement-badge">International</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Global University Admissions</h3>
+                        <p class="text-gray-600 mb-4">46 graduates accepted to competitive universities in the USA, UK, Korea, and Uzbekistan, including top 8 universities in the USA.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2022</span>
+                            <span class="text-orange-600 font-semibold">46 Students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sports Achievements -->
+                <div class="achievement-card animate-fade-in" data-category="sports">
+                    <img src="resources/sports.jpg" alt="Chess Champions" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">Chess</span>
+                            <span class="achievement-badge">Sports</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Chess Champions</h3>
+                        <p class="text-gray-600 mb-4">Our chess team has won multiple regional championships, with students representing Samarkand in national competitions.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2023</span>
+                            <span class="text-orange-600 font-semibold">Regional Winners</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievement-card animate-fade-in" data-category="sports">
+                    <img src="resources/sports.jpg" alt="Basketball Team" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">Basketball</span>
+                            <span class="achievement-badge">Sports</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Basketball Excellence</h3>
+                        <p class="text-gray-600 mb-4">Our basketball team consistently performs at high levels, with several players selected for regional and national youth teams.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2022-2023</span>
+                            <span class="text-orange-600 font-semibold">District Champions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Arts Achievements -->
+                <div class="achievement-card animate-fade-in" data-category="arts">
+                    <img src="resources/library.jpg" alt="Art Competition" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">Art</span>
+                            <span class="achievement-badge">Creative</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Art Competition Winners</h3>
+                        <p class="text-gray-600 mb-4">Students showcasing exceptional talent in painting, drawing, and digital art, winning recognition in national art competitions.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2023</span>
+                            <span class="text-orange-600 font-semibold">National Recognition</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievement-card animate-fade-in" data-category="arts">
+                    <img src="resources/library.jpg" alt="Music Performance" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">Music</span>
+                            <span class="achievement-badge">Performance</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Music Excellence</h3>
+                        <p class="text-gray-600 mb-4">Our music program produces talented musicians who perform at school events and regional music festivals.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2022-2023</span>
+                            <span class="text-orange-600 font-semibold">Festival Performers</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Academic Achievements -->
+                <div class="achievement-card animate-fade-in" data-category="academic">
+                    <img src="resources/science.jpg" alt="Science Olympiad" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">Science</span>
+                            <span class="achievement-badge">Olympiad</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Science Olympiad Success</h3>
+                        <p class="text-gray-600 mb-4">Students demonstrating exceptional ability in physics, chemistry, and biology, winning medals in regional science competitions.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2023</span>
+                            <span class="text-orange-600 font-semibold">Multiple Medalists</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievement-card animate-fade-in" data-category="academic">
+                    <img src="resources/science.jpg" alt="Math Competition" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="achievement-badge">Mathematics</span>
+                            <span class="achievement-badge">Competition</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Mathematical Excellence</h3>
+                        <p class="text-gray-600 mb-4">Strong performance in regional and national mathematics competitions, with students advancing to higher-level contests.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">2022-2023</span>
+                            <span class="text-orange-600 font-semibold">Regional Top 3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- University Admissions Visualization -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">University Admissions 2022</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Our graduates continue their education at prestigious institutions worldwide</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Admissions by Country</h3>
+                    <div id="admissions-chart" style="height: 400px;"></div>
+                </div>
+                
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Top University Destinations</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
+                            <div class="flex items-center">
+                                <div class="university-logo mr-4">USA</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">United States</h4>
+                                    <p class="text-sm text-gray-600">Top 8 Universities</p>
+                                </div>
+                            </div>
+                            <span class="text-2xl font-bold text-orange-600">8</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-teal-50 rounded-xl">
+                            <div class="flex items-center">
+                                <div class="university-logo mr-4">UK</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">United Kingdom</h4>
+                                    <p class="text-sm text-gray-600">Prestigious institutions</p>
+                                </div>
+                            </div>
+                            <span class="text-2xl font-bold text-teal-600">6</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-amber-50 rounded-xl">
+                            <div class="flex items-center">
+                                <div class="university-logo mr-4">KR</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">South Korea</h4>
+                                    <p class="text-sm text-gray-600">Leading universities</p>
+                                </div>
+                            </div>
+                            <span class="text-2xl font-bold text-amber-600">4</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
+                            <div class="flex items-center">
+                                <div class="university-logo mr-4">UZ</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Uzbekistan</h4>
+                                    <p class="text-sm text-gray-600">National universities</p>
+                                </div>
+                            </div>
+                            <span class="text-2xl font-bold text-orange-600">28</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Testimonials -->
+    <section class="py-20 bg-gradient-to-br from-orange-50 to-amber-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Student Voices</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Hear from our successful graduates about their journey at School #37</p>
+            </div>
+            
+            <div class="splide" id="testimonials-slider">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="testimonial-card mx-4">
+                                <div class="flex items-center mb-6">
+                                    <img src="resources/students-achievement.jpg" alt="Student" class="student-avatar mr-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Khushnud Ochilov</h3>
+                                        <p class="text-orange-600 font-medium">FLEX Finalist '23</p>
+                                        <p class="text-sm text-gray-500">Accepted to Top 8 Universities in USA</p>
+                                    </div>
+                                </div>
+                                <blockquote class="text-gray-600 italic mb-4">
+                                    "School #37 provided me with the foundation and confidence to pursue my dreams. The English specialization program and dedicated teachers prepared me for success in the FLEX program and university admissions."
+                                </blockquote>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="achievement-badge">FLEX Finalist</span>
+                                    <span class="achievement-badge">USA Universities</span>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card mx-4">
+                                <div class="flex items-center mb-6">
+                                    <img src="resources/students-achievement.jpg" alt="Student" class="student-avatar mr-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Sabrina Bakhronbekova</h3>
+                                        <p class="text-orange-600 font-medium">FLEX Finalist '24</p>
+                                        <p class="text-sm text-gray-500">IELTS 8.0 Score</p>
+                                    </div>
+                                </div>
+                                <blockquote class="text-gray-600 italic mb-4">
+                                    "The supportive environment and excellent teaching at School #37 helped me achieve my academic goals. I'm grateful for the opportunities to participate in international programs."
+                                </blockquote>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="achievement-badge">FLEX Finalist</span>
+                                    <span class="achievement-badge">IELTS 8.0</span>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card mx-4">
+                                <div class="flex items-center mb-6">
+                                    <img src="resources/students-achievement.jpg" alt="Student" class="student-avatar mr-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Oybek Jurabaev</h3>
+                                        <p class="text-orange-600 font-medium">FLEX Finalist '24</p>
+                                        <p class="text-sm text-gray-500">Chess Champion</p>
+                                    </div>
+                                </div>
+                                <blockquote class="text-gray-600 italic mb-4">
+                                    "School #37 taught me that success comes from dedication and hard work. The teachers always believed in me and encouraged me to excel both academically and in extracurricular activities."
+                                </blockquote>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="achievement-badge">FLEX Finalist</span>
+                                    <span class="achievement-badge">Chess Champion</span>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card mx-4">
+                                <div class="flex items-center mb-6">
+                                    <img src="resources/students-achievement.jpg" alt="Student" class="student-avatar mr-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Kasimov Edgar</h3>
+                                        <p class="text-orange-600 font-medium">FLEX Finalist '23</p>
+                                        <p class="text-sm text-gray-500">Accepted to 11 Foreign Universities</p>
+                                    </div>
+                                </div>
+                                <blockquote class="text-gray-600 italic mb-4">
+                                    "The quality of education and the opportunities provided at School #37 opened doors for me to study at prestigious universities around the world. I'm excited about my future."
+                                </blockquote>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="achievement-badge">FLEX Finalist</span>
+                                    <span class="achievement-badge">International Universities</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Performance Charts -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">Academic Performance</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Consistent excellence in standardized testing and assessments</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">IELTS Score Distribution</h3>
+                    <div id="ielts-chart" style="height: 350px;"></div>
+                </div>
+                
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Academic Progression</h3>
+                    <div id="progression-chart" style="height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="text-2xl font-display font-bold text-orange-400 mb-4">School #37</div>
+                    <p class="text-gray-300 mb-4">Specialized School #37 in Samarkand - Excellence in education since 1936.</p>
+                    <p class="text-gray-400 text-sm">Makhmud Koshgari 61, Samarkand, Uzbekistan</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-300 hover:text-orange-400 transition-colors">About School</a></li>
+                        <li><a href="achievements.html" class="text-orange-400 hover:text-orange-300 transition-colors">Achievements</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-orange-400 transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+                    <div class="space-y-2 text-gray-300">
+                        <p>Phone: +998 (97) 921-85-04</p>
+                        <p>Email: nigina.mukhsinova@school-37.com</p>
+                        <p>Principal: +998 (91) 557-29-47</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Specialized School #37, Samarkand. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Initialize achievements page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initAchievementFilters();
+            initTestimonialsSlider();
+            initCharts();
+        });
+
+        function initAchievementFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const achievementCards = document.querySelectorAll('.achievement-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Update active button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter cards
+                    achievementCards.forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                            anime({
+                                targets: card,
+                                opacity: [0, 1],
+                                translateY: [20, 0],
+                                duration: 500,
+                                easing: 'easeOutExpo'
+                            });
+                        } else {
+                            const categories = card.getAttribute('data-category').split(' ');
+                            if (categories.includes(filter)) {
+                                card.style.display = 'block';
+                                anime({
+                                    targets: card,
+                                    opacity: [0, 1],
+                                    translateY: [20, 0],
+                                    duration: 500,
+                                    easing: 'easeOutExpo'
+                                });
+                            } else {
+                                anime({
+                                    targets: card,
+                                    opacity: [1, 0],
+                                    translateY: [0, -20],
+                                    duration: 300,
+                                    easing: 'easeInExpo',
+                                    complete: function() {
+                                        card.style.display = 'none';
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        }
+
+        function initTestimonialsSlider() {
+            if (document.getElementById('testimonials-slider')) {
+                new Splide('#testimonials-slider', {
+                    type: 'loop',
+                    perPage: 2,
+                    perMove: 1,
+                    gap: '2rem',
+                    autoplay: true,
+                    interval: 5000,
+                    pauseOnHover: true,
+                    breakpoints: {
+                        768: {
+                            perPage: 1,
+                        }
+                    }
+                }).mount();
+            }
+        }
+
+        function initCharts() {
+            // University Admissions Chart
+            const admissionsChart = echarts.init(document.getElementById('admissions-chart'));
+            const admissionsOption = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: {
+                        color: '#36454F'
+                    }
+                },
+                series: [
+                    {
+                        name: 'University Admissions',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            { value: 8, name: 'USA', itemStyle: { color: '#D2691E' } },
+                            { value: 6, name: 'UK', itemStyle: { color: '#2F4F4F' } },
+                            { value: 4, name: 'Korea', itemStyle: { color: '#FFB347' } },
+                            { value: 28, name: 'Uzbekistan', itemStyle: { color: '#CD853F' } }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            admissionsChart.setOption(admissionsOption);
+
+            // IELTS Score Chart
+            const ieltsChart = echarts.init(document.getElementById('ielts-chart'));
+            const ieltsOption = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['6.0', '6.5', '7.0', '7.5', '8.0'],
+                    axisLabel: {
+                        color: '#36454F'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        color: '#36454F'
+                    }
+                },
+                series: [{
+                    data: [5, 12, 18, 8, 3],
+                    type: 'bar',
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#D2691E' },
+                            { offset: 1, color: '#FFB347' }
+                        ])
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#CD853F' },
+                                { offset: 1, color: '#D2691E' }
+                            ])
+                        }
+                    }
+                }]
+            };
+            ieltsChart.setOption(ieltsOption);
+
+            // Academic Progression Chart
+            const progressionChart = echarts.init(document.getElementById('progression-chart'));
+            const progressionOption = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['Graduates', 'University Admissions', 'International Programs'],
+                    textStyle: {
+                        color: '#36454F'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2020', '2021', '2022', '2023', '2024'],
+                    axisLabel: {
+                        color: '#36454F'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        color: '#36454F'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Graduates',
+                        type: 'line',
+                        data: [38, 42, 46, 48, 52],
+                        itemStyle: { color: '#D2691E' }
+                    },
+                    {
+                        name: 'University Admissions',
+                        type: 'line',
+                        data: [35, 39, 46, 47, 50],
+                        itemStyle: { color: '#2F4F4F' }
+                    },
+                    {
+                        name: 'International Programs',
+                        type: 'line',
+                        data: [2, 3, 4, 6, 8],
+                        itemStyle: { color: '#FFB347' }
+                    }
+                ]
+            };
+            progressionChart.setOption(progressionOption);
+
+            // Make charts responsive
+            window.addEventListener('resize', function() {
+                admissionsChart.resize();
+                ieltsChart.resize();
+                progressionChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>
