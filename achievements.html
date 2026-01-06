@@ -205,22 +205,22 @@
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="stats-card animate-fade-in">
-                    <div class="stats-number" data-target="89">0</div>
+                    <div class="stats-counter" data-target="89">0</div>
                     <p class="text-gray-600 font-medium text-lg">2025 Graduates</p>
                     <p class="text-sm text-gray-500 mt-2">Accepted to top universities</p>
                 </div>
                 <div class="stats-card animate-fade-in">
-                    <div class="stats-number" data-target="3">0</div>
+                    <div class="stats-counter" data-target="3">0</div>
                     <p class="text-gray-600 font-medium text-lg">FLEX Finalists</p>
                     <p class="text-sm text-gray-500 mt-2">2025 & 2026</p>
                 </div>
                 <div class="stats-card animate-fade-in">
-                    <div class="stats-number" data-target="31">0</div>
+                    <div class="stats-counter" data-target="31">0</div>
                     <p class="text-gray-600 font-medium text-lg">Foreign Universities</p>
                     <p class="text-sm text-gray-500 mt-2">Acceptances</p>
                 </div>
                 <div class="stats-card animate-fade-in">
-                    <div class="stats-number" data-target="26">0</div>
+                    <div class="stats-counter" data-target="26">0</div>
                     <p class="text-gray-600 font-medium text-lg">High IELTS Achieved</p>
                     <p class="text-sm text-gray-500 mt-2">Students with high IELTS</p>
                 </div>
@@ -423,7 +423,7 @@
                                     <p class="text-sm text-gray-600">Top 8 Universities</p>
                                 </div>
                             </div>
-                            <span class="text-2xl font-bold text-orange-600">8</span>
+                            <span class="text-2xl font-bold text-orange-600">6</span>
                         </div>
                         
                         <div class="flex items-center justify-between p-4 bg-teal-50 rounded-xl">
@@ -434,7 +434,7 @@
                                     <p class="text-sm text-gray-600">Prestigious institutions</p>
                                 </div>
                             </div>
-                            <span class="text-2xl font-bold text-teal-600">6</span>
+                            <span class="text-2xl font-bold text-teal-600">8</span>
                         </div>
                         
                         <div class="flex items-center justify-between p-4 bg-amber-50 rounded-xl">
@@ -705,6 +705,7 @@
                 legend: {
                     orient: 'vertical',
                     left: 'left',
+                    data: ['Uzbekistan', 'United States', 'United Kingdom', 'South Korea', 'European Union', 'United Arab Emirates', 'China', 'Qatar', 'Malaysia'],
                     textStyle: {
                         color: '#36454F'
                     }
@@ -714,12 +715,15 @@
                         name: 'University Admissions',
                         type: 'pie',
                         radius: '50%',
-                        data: [
-                            { value: 8, name: 'USA', itemStyle: { color: '#D2691E' } },
-                            { value: 6, name: 'UK', itemStyle: { color: '#2F4F4F' } },
-                            { value: 4, name: 'Korea', itemStyle: { color: '#FFB347' } },
-                            { value: 28, name: 'Uzbekistan', itemStyle: { color: '#CD853F' } }
-                        ],
+                        data: [{ value: 46, name: 'Uzbekistan', itemStyle: { color: '#CD853F' } },
+                            { value: 6, name: 'United States', itemStyle: { color: '#D2691E' } },
+                            { value: 8, name: 'United Kingdom', itemStyle: { color: '#2F4F4F' } },
+                            { value: 6, name: 'South Korea', itemStyle: { color: '#FFB347' } },
+                            { value: 4, name: 'European Union', itemStyle: { color: '#6B8E23' } },
+                            { value: 3, name: 'United Arab Emirates', itemStyle: { color: '#4682B4' } },
+                            { value: 2, name: 'China', itemStyle: { color: '#B22222' } },
+                            { value: 1, name: 'Qatar', itemStyle: { color: '#8A2BE2' } },
+                            { value: 1, name: 'Malaysia', itemStyle: { color: '#008080' } }],
                         emphasis: {
                             itemStyle: {
                                 shadowBlur: 10,
