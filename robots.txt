@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Private documents must never be indexed.
+# NOTE: this only asks well-behaved crawlers not to index the folder — it does
+# NOT make the files private. Anything genuinely confidential must be removed
+# from the repository entirely.
+Disallow: /files/
+
+Sitemap: https://school-37.com/sitemap.xml

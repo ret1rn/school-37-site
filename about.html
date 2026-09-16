@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#D2691E">
     <title>About School #37 - Samarkand | Our History & Mission</title>
     <meta name="description" content="Learn about Specialized School #37 in Samarkand - Our history since 1936, mission, facilities, and dedicated staff committed to educational excellence.">
-    
+    <link rel="canonical" href="https://school-37.com/about.html">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+    <!-- Social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Specialized School #37, Samarkand">
+    <meta property="og:title" content="About School #37 - Samarkand | Our History & Mission">
+    <meta property="og:description" content="Our history since 1936, mission, facilities, and the staff behind one of Samarkand's most established schools.">
+    <meta property="og:url" content="https://school-37.com/about.html">
+    <meta property="og:image" content="https://school-37.com/resources/hero-school.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About School #37 - Samarkand">
+    <meta name="twitter:description" content="Our history since 1936, mission, facilities and staff.">
+    <meta name="twitter:image" content="https://school-37.com/resources/hero-school.jpg">
+
+    <!-- Progressive enhancement flag: CSS hides content for animation only when JS is running -->
+    <script>document.documentElement.classList.add('js');</script>
+
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
+
     <!-- Core Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
-    
+
     <style>
         :root {
             --terracotta: #D2691E;
@@ -23,6 +42,9 @@
             --amber: #FFB347;
             --cream: #FDF5E6;
             --charcoal: #36454F;
+            /* Opt out of browser auto-darkening: the cream and terracotta palette
+               inverts badly when a browser forces a dark theme onto the page. */
+            color-scheme: light;
         }
         
         body {
@@ -122,17 +144,35 @@
             border: 4px solid var(--amber);
         }
         
-        .animate-fade-in {
+        /* Content is hidden for the reveal animation only while JS is running,
+           so the page is still readable if scripts fail or are blocked. */
+        .js .animate-fade-in {
             opacity: 0;
             transform: translateY(30px);
         }
-        
-        .animate-fade-in.visible {
+
+        .js .animate-fade-in.visible {
             opacity: 1;
             transform: translateY(0);
             transition: all 0.6s ease;
         }
-        
+
+        @media (prefers-reduced-motion: reduce) {
+            .js .animate-fade-in {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .facility-card,
+            .staff-card,
+            .curriculum-tab,
+            .facility-detail {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
         .facility-detail {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
@@ -184,8 +224,9 @@
                     </div>
                 </div>
                 <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-orange-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button type="button" class="mobile-menu-button text-gray-700 hover:text-orange-600"
+                            aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -258,7 +299,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="animate-fade-in">
-                    <img src="resources/principal.jpg" alt="School Principal" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto">
+                    <img decoding="async" loading="lazy" width="900" height="900" src="resources/principal.jpg" alt="School Principal" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto">
                 </div>
                 <div class="animate-fade-in">
                     <h2 class="text-4xl font-display font-bold text-gray-900 mb-8">Our Mission & Vision</h2>
@@ -304,19 +345,19 @@
             </div>
             
             <!-- Facility Categories -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in">
-                <button class="facility-tab curriculum-tab active" data-facility="classrooms">Modern Classrooms</button>
-                <button class="facility-tab curriculum-tab" data-facility="library">Library & Resource Center</button>
-                <button class="facility-tab curriculum-tab" data-facility="science">Science Laboratories</button>
-                <button class="facility-tab curriculum-tab" data-facility="sports">Sports Facilities</button>
-                <button class="facility-tab curriculum-tab" data-facility="arts">Arts & Music Studios</button>
+            <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in" role="tablist" aria-label="School facilities">
+                <button type="button" role="tab" aria-selected="true" aria-controls="classrooms" class="facility-tab curriculum-tab active" data-facility="classrooms">Modern Classrooms</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="library" class="facility-tab curriculum-tab" data-facility="library">Library &amp; Resource Center</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="science" class="facility-tab curriculum-tab" data-facility="science">Science Laboratories</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="sports" class="facility-tab curriculum-tab" data-facility="sports">Sports Facilities</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="arts" class="facility-tab curriculum-tab" data-facility="arts">Arts &amp; Music Studios</button>
             </div>
             
             <!-- Facility Details -->
             <div class="facility-detail active" id="classrooms">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="resources/classroom.jpg" alt="Modern Classroom" class="rounded-2xl shadow-xl w-full">
+                        <img decoding="async" loading="lazy" width="445" height="364" src="resources/classroom.jpg" alt="Modern Classroom" class="rounded-2xl shadow-xl w-full">
                     </div>
                     <div>
                         <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Modern Classrooms</h3>
@@ -357,7 +398,7 @@
             <div class="facility-detail" id="library">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="resources/library-modern.jpg" alt="School Library" class="rounded-2xl shadow-xl w-full">
+                        <img decoding="async" loading="lazy" width="1024" height="1024" src="resources/library-modern.jpg" alt="School Library" class="rounded-2xl shadow-xl w-full">
                     </div>
                     <div>
                         <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Library & Resource Center</h3>
@@ -398,7 +439,7 @@
             <div class="facility-detail" id="science">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="resources/science.jpg" alt="Science Lab" class="rounded-2xl shadow-xl w-full">
+                        <img decoding="async" loading="lazy" width="1200" height="800" src="resources/science-lab.jpg" alt="A school science laboratory with workbenches and equipment" class="rounded-2xl shadow-xl w-full">
                     </div>
                     <div>
                         <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Science Laboratories</h3>
@@ -439,7 +480,7 @@
             <div class="facility-detail" id="sports">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="resources/sports.jpg" alt="Sports Facilities" class="rounded-2xl shadow-xl w-full">
+                        <img decoding="async" loading="lazy" width="1199" height="753" src="resources/sports.jpg" alt="Sports Facilities" class="rounded-2xl shadow-xl w-full">
                     </div>
                     <div>
                         <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Sports Facilities</h3>
@@ -480,7 +521,7 @@
             <div class="facility-detail" id="arts">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
-                        <img src="resources/library.jpg" alt="Arts Studio" class="rounded-2xl shadow-xl w-full">
+                        <img decoding="async" loading="lazy" width="1024" height="683" src="resources/art-studio.jpg" alt="Pupils painting together in an art class" class="rounded-2xl shadow-xl w-full">
                     </div>
                     <div>
                         <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">Arts & Music Studios</h3>
@@ -530,44 +571,50 @@
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="staff-card animate-fade-in">
-                    <img src="resources/principal.jpg" alt="Principal" class="staff-avatar">
+                    <img decoding="async" loading="lazy" width="900" height="900" src="resources/principal.jpg" alt="Akramova Zamira, School Principal" class="staff-avatar">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Akramova Zamira</h3>
                     <p class="text-orange-600 font-medium mb-3">School Principal</p>
                     <p class="text-sm text-gray-600 mb-4">Leading our school with vision and dedication to educational excellence.</p>
                     <div class="text-sm text-gray-500">
-                        <p>+998 (91) 557-29-47</p>
-                        <p>zamira.akramova@school-37.com</p>
+                        <p><a href="tel:+998915572947" class="hover:text-orange-600 transition-colors">+998 (91) 557-29-47</a></p>
+                        <p><a href="mailto:zamira.akramova-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">zamira.akramova-school-37@mail.ru</a></p>
                     </div>
                 </div>
                 
                 <div class="staff-card animate-fade-in">
-                    <img src="resources/teacher-female.jpg" alt="Counselor" class="staff-avatar">
+                    <img decoding="async" loading="lazy" width="600" height="600" src="resources/teacher-female.jpg" alt="Mukhsinova Nigina, School Counselor" class="staff-avatar">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Mukhsinova Nigina</h3>
                     <p class="text-orange-600 font-medium mb-3">School Counselor</p>
                     <p class="text-sm text-gray-600 mb-4">Supporting students' academic and personal development journey.</p>
                     <div class="text-sm text-gray-500">
-                        <p>+998 (97) 921-85-04</p>
-                        <p>nigina.mukhsinova@school-37.com</p>
+                        <p><a href="tel:+998979218504" class="hover:text-orange-600 transition-colors">+998 (97) 921-85-04</a></p>
+                        <p><a href="mailto:nigina.mukhsinova-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">nigina.mukhsinova-school-37@mail.ru</a></p>
                     </div>
                 </div>
                 
                 <div class="staff-card animate-fade-in">
-                    <img src="resources/teacher-male.jpg" alt="Head Teacher" class="staff-avatar">
+                    <!-- Placeholder: teacher-male.jpg was a stock photo of a man used for a woman. Replace with a real photograph of Sharipova Umeda. -->
+                    <img width="200" height="200" loading="lazy" decoding="async" src="resources/avatars/umeda-sharipova.svg" alt="Sharipova Umeda" class="staff-avatar">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Sharipova Umeda</h3>
                     <p class="text-orange-600 font-medium mb-3">Head Teacher</p>
                     <p class="text-sm text-gray-600 mb-4">Overseeing curriculum implementation and academic standards.</p>
                     <div class="text-sm text-gray-500">
-                        <p>+998 (97) 921-53-48</p>
+                        <p><a href="tel:+998979215348" class="hover:text-orange-600 transition-colors">+998 (97) 921-53-48</a></p>
+                        <p><a href="mailto:umeda.sharipova-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">umeda.sharipova-school-37@mail.ru</a></p>
                     </div>
                 </div>
                 
                 <div class="staff-card animate-fade-in">
-                    <img src="resources/natasha.jpg" alt="Head Teacher" class="staff-avatar">
+                    <img decoding="async" loading="lazy" width="600" height="600" src="resources/natasha.jpg" alt="Ugryumova Natalya, Head Teacher" class="staff-avatar">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Ugryumova Natalya</h3>
                     <p class="text-orange-600 font-medium mb-3">Head Teacher</p>
                     <p class="text-sm text-gray-600 mb-4">Coordinating educational programs and student activities.</p>
+                    <!-- TODO: this number conflicts with contact.html, which lists
+                         +998 (95) 558-23-48 for the same person. Confirm which is correct
+                         and make both pages match. -->
                     <div class="text-sm text-gray-500">
-                        <p>+998 (90) 505-51-38</p>
+                        <p><a href="tel:+998905055138" class="hover:text-orange-600 transition-colors">+998 (90) 505-51-38</a></p>
+                        <p><a href="mailto:vladimirovna.natalya-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">vladimirovna.natalya-school-37@mail.ru</a></p>
                     </div>
                 </div>
             </div>
@@ -655,9 +702,9 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
                     <div class="space-y-2 text-gray-300">
-                        <p>Phone: +998 (97) 921-85-04</p>
-                        <p>Email: umeda-sharipova-school-37@mail.ru</p>
-                        <p>Principal: +998 (91) 557-29-47</p>
+                        <p>Phone: <a href="tel:+998979218504" class="hover:text-orange-400 transition-colors">+998 (97) 921-85-04</a></p>
+                        <p>Email: <a href="mailto:umeda.sharipova-school-37@mail.ru" class="hover:text-orange-400 transition-colors break-all">umeda.sharipova-school-37@mail.ru</a></p>
+                        <p>Principal: <a href="tel:+998915572947" class="hover:text-orange-400 transition-colors">+998 (91) 557-29-47</a></p>
                     </div>
                 </div>
             </div>
@@ -682,14 +729,20 @@
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const facility = this.getAttribute('data-facility');
-                    
+                    const panel = document.getElementById(facility);
+                    if (!panel) return;
+
                     // Remove active class from all tabs and details
-                    tabs.forEach(t => t.classList.remove('active'));
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
                     details.forEach(d => d.classList.remove('active'));
-                    
+
                     // Add active class to clicked tab and corresponding detail
                     this.classList.add('active');
-                    document.getElementById(facility).classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    panel.classList.add('active');
                 });
             });
         }

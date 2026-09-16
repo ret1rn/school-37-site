@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="SU">
+  <defs>
+    <linearGradient id="bg-umeda-sharipova" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#D2691E"/>
+      <stop offset="1" stop-color="#FFB347"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg-umeda-sharipova)"/>
+  <text x="100" y="100" font-family="Georgia, 'Times New Roman', serif" font-size="76"
+        font-weight="bold" fill="#FDF5E6" text-anchor="middle" dominant-baseline="central"
+        letter-spacing="2">SU</text>
+</svg>

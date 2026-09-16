@@ -3,20 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#D2691E">
     <title>Specialized School #37 - Samarkand | Excellence in Education</title>
     <meta name="description" content="Specialized School #37 in Samarkand - One of the oldest and most prestigious schools in Uzbekistan, founded in 1936. Excellence in English language education with strong academic achievements.">
-    
+    <link rel="canonical" href="https://school-37.com/">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+    <!-- Social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Specialized School #37, Samarkand">
+    <meta property="og:title" content="Specialized School #37 - Samarkand | Excellence in Education">
+    <meta property="og:description" content="One of the oldest and most prestigious schools in Uzbekistan, founded in 1936. Excellence in English language education.">
+    <meta property="og:url" content="https://school-37.com/">
+    <meta property="og:image" content="https://school-37.com/resources/hero-school.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Specialized School #37 - Samarkand">
+    <meta name="twitter:description" content="Excellence in education since 1936. Samarkand, Uzbekistan.">
+    <meta name="twitter:image" content="https://school-37.com/resources/hero-school.jpg">
+
+    <!-- Progressive enhancement flag: CSS hides content for animation only when JS is running -->
+    <script>document.documentElement.classList.add('js');</script>
+
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
+
     <!-- Core Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-    
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "School",
+      "name": "Specialized School #37",
+      "alternateName": "School #37 Samarkand",
+      "url": "https://school-37.com/",
+      "foundingDate": "1936",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Makhmud Koshgari 61",
+        "addressLocality": "Samarkand",
+        "postalCode": "140100",
+        "addressCountry": "UZ"
+      },
+      "telephone": "+998979218504"
+    }
+    </script>
+
     <style>
         :root {
             --terracotta: #D2691E;
@@ -24,6 +63,9 @@
             --amber: #FFB347;
             --cream: #FDF5E6;
             --charcoal: #36454F;
+            /* Opt out of browser auto-darkening: the cream and terracotta palette
+               inverts badly when a browser forces a dark theme onto the page. */
+            color-scheme: light;
         }
         
         body {
@@ -113,15 +155,32 @@
             opacity: 1;
         }
         
-        .animate-fade-in {
+        /* Content is hidden for the reveal animation only while JS is running,
+           so the page is still readable if scripts fail or are blocked. */
+        .js .animate-fade-in {
             opacity: 0;
             transform: translateY(30px);
         }
-        
-        .animate-fade-in.visible {
+
+        .js .animate-fade-in.visible {
             opacity: 1;
             transform: translateY(0);
             transition: all 0.6s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js .animate-fade-in {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .animate-bounce,
+            .card-hover,
+            .achievement-card {
+                animation: none !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
@@ -143,8 +202,9 @@
                     </div>
                 </div>
                 <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-orange-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button type="button" class="mobile-menu-button text-gray-700 hover:text-orange-600"
+                            aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -154,11 +214,13 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="floating-particles" id="particles"></div>
-        
+    <section id="main" class="hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="floating-particles" id="particles" aria-hidden="true"></div>
+
         <div class="absolute inset-0 z-0">
-            <img src="resources/hero-school.jpg" alt="School #37 Building" class="w-full h-full object-cover">
+            <img src="resources/hero-school.jpg" alt="The School #37 building in Samarkand"
+                 width="2048" height="896" fetchpriority="high" decoding="async"
+                 class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
         </div>
         
@@ -172,7 +234,7 @@
                     Excellence in Education Since 1936<br>
                     <span class="text-amber-300">Samarkand, Uzbekistan</span>
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <div class="hero-actions flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="about.html" class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg">
                         Discover Our Story
                     </a>
@@ -232,8 +294,8 @@
                 <div class="lg:col-span-2 animate-fade-in">
                     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
                         <div class="video-container">
-                            <iframe id="main-video" src="https://www.youtube.com/embed/yxj-boIhz1Q" 
-                                    title="School #37 Video" frameborder="0" 
+                            <iframe id="main-video" src="https://www.youtube-nocookie.com/embed/yxj-boIhz1Q"
+                                    title="School #37 Overview" loading="lazy" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                     allowfullscreen></iframe>
                         </div>
@@ -248,7 +310,7 @@
                 <div class="animate-fade-in">
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Video Gallery</h3>
                     <div class="space-y-4">
-                        <div class="video-item bg-white rounded-xl p-4 shadow-lg cursor-pointer card-hover active" data-video="yxj-boIhz1Q" data-title="School #37 Overview" data-description="Discover our prestigious school, established in 1936, with a strong curriculum specialized in English language education.">
+                        <div class="video-item bg-white rounded-xl p-4 shadow-lg cursor-pointer card-hover active" role="button" tabindex="0" aria-selected="true" data-video="yxj-boIhz1Q" data-title="School #37 Overview" data-description="Discover our prestigious school, established in 1936, with a strong curriculum specialized in English language education.">
                             <div class="flex items-center space-x-4">
                                 <div class="w-16 h-12 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -263,7 +325,7 @@
                             </div>
                         </div>
                         
-                        <div class="video-item bg-white rounded-xl p-4 shadow-lg cursor-pointer card-hover" data-video="nFGSkErEz74" data-title="Traditional School Opening" data-description="Experience the traditional school opening ceremony and see our students beginning their academic journey.">
+                        <div class="video-item bg-white rounded-xl p-4 shadow-lg cursor-pointer card-hover" role="button" tabindex="0" aria-selected="false" data-video="nFGSkErEz74" data-title="Traditional School Opening" data-description="Experience the traditional school opening ceremony and see our students beginning their academic journey.">
                             <div class="flex items-center space-x-4">
                                 <div class="w-16 h-12 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -296,7 +358,7 @@
                     <ul class="splide__list">
                         <li class="splide__slide">
                             <div class="achievement-card mx-4">
-                                <img src="resources/students-achievement.jpg" alt="FLEX Finalists" class="w-full h-48 object-cover">
+                                <img decoding="async" loading="lazy" width="825" height="759" src="resources/students-achievement.jpg" alt="FLEX Finalists" class="w-full h-48 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">FLEX Finalists</h3>
                                     <p class="text-gray-600 mb-4">Our students selected for the prestigious Future Leaders Exchange Program</p>
@@ -311,7 +373,7 @@
                         </li>
                         <li class="splide__slide">
                             <div class="achievement-card mx-4">
-                                <img src="resources/graduation.jpg" alt="University Admissions" class="w-full h-48 object-cover">
+                                <img decoding="async" loading="lazy" width="1200" height="800" src="resources/graduation.jpg" alt="University Admissions" class="w-full h-48 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">University Success</h3>
                                     <p class="text-gray-600 mb-4">89 graduates accepted to top universities in USA, EU, GCC, and Uzbekistan</p>
@@ -326,7 +388,7 @@
                         </li>
                         <li class="splide__slide">
                             <div class="achievement-card mx-4">
-                                <img src="resources/classroom.jpg" alt="IELTS Success" class="w-full h-48 object-cover">
+                                <img decoding="async" loading="lazy" width="445" height="364" src="resources/classroom.jpg" alt="IELTS Success" class="w-full h-48 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">IELTS Excellence</h3>
                                     <p class="text-gray-600 mb-4">Students achieving outstanding IELTS scores of 8.0 and 7.5</p>
@@ -341,7 +403,7 @@
                         </li>
                         <li class="splide__slide">
                             <div class="achievement-card mx-4">
-                                <img src="resources/sports.jpg" alt="Sports Champions" class="w-full h-48 object-cover">
+                                <img decoding="async" loading="lazy" width="1199" height="753" src="resources/sports.jpg" alt="Sports Champions" class="w-full h-48 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Sports Champions</h3>
                                     <p class="text-gray-600 mb-4">Excellence in chess, basketball, soccer, and volleyball competitions</p>
@@ -400,9 +462,9 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
                     <div class="space-y-2 text-gray-300">
-                        <p>Phone: +998 (97) 921-85-04</p>
-                        <p>Email: umeda.sharipova-school-37@mail.ru</p>
-                        <p>Principal: +998 (91) 557-29-47</p>
+                        <p>Phone: <a href="tel:+998979218504" class="hover:text-orange-400 transition-colors">+998 (97) 921-85-04</a></p>
+                        <p>Email: <a href="mailto:umeda.sharipova-school-37@mail.ru" class="hover:text-orange-400 transition-colors break-all">umeda.sharipova-school-37@mail.ru</a></p>
+                        <p>Principal: <a href="tel:+998915572947" class="hover:text-orange-400 transition-colors">+998 (91) 557-29-47</a></p>
                     </div>
                 </div>
             </div>

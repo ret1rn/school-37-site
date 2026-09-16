@@ -1,0 +1,29 @@
+# Build archives and site dumps — never commit these
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z
+
+# Editor / OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+
+# Originals kept locally before optimisation
+resources/_originals/
+
+# Raw downloaded candidate photos — the chosen ones are copied into resources/
+resources/sample/
+
+# Private documents — student records must never be published
+files/transcripts/

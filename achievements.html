@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#D2691E">
     <title>Student Achievements - School #37 Samarkand | Excellence in Education</title>
     <meta name="description" content="Explore the outstanding achievements of School #37 students - FLEX finalists, IELTS success, university admissions, and academic excellence in Samarkand.">
-    
+    <link rel="canonical" href="https://school-37.com/achievements.html">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+    <!-- Social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Specialized School #37, Samarkand">
+    <meta property="og:title" content="Student Achievements - School #37 Samarkand">
+    <meta property="og:description" content="FLEX finalists, IELTS success, and university admissions across the world.">
+    <meta property="og:url" content="https://school-37.com/achievements.html">
+    <meta property="og:image" content="https://school-37.com/resources/graduation.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Student Achievements - School #37 Samarkand">
+    <meta name="twitter:description" content="FLEX finalists, IELTS success, and university admissions across the world.">
+    <meta name="twitter:image" content="https://school-37.com/resources/graduation.jpg">
+
+    <!-- Progressive enhancement flag: CSS hides content for animation only when JS is running -->
+    <script>document.documentElement.classList.add('js');</script>
+
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
+
     <!-- Core Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
@@ -23,6 +44,9 @@
             --amber: #FFB347;
             --cream: #FDF5E6;
             --charcoal: #36454F;
+            /* Opt out of browser auto-darkening: the cream and terracotta palette
+               inverts badly when a browser forces a dark theme onto the page. */
+            color-scheme: light;
         }
         
         body {
@@ -100,17 +124,40 @@
             line-height: 1;
         }
         
-        .animate-fade-in {
+        /* Content is hidden for the reveal animation only while JS is running,
+           so the page is still readable if scripts fail or are blocked. */
+        .js .animate-fade-in {
             opacity: 0;
             transform: translateY(30px);
         }
-        
-        .animate-fade-in.visible {
+
+        .js .animate-fade-in.visible {
             opacity: 1;
             transform: translateY(0);
             transition: all 0.6s ease;
         }
-        
+
+        /* Filtering is driven by this class, not by inline styles written by the
+           animation library — an interrupted animation can no longer leave a
+           card stuck invisible. */
+        .achievement-card.is-filtered-out {
+            display: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js .animate-fade-in {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .achievement-card,
+            .filter-btn,
+            .stats-card {
+                transition: none !important;
+            }
+        }
+
         .testimonial-card {
             background: white;
             border-radius: 16px;
@@ -170,8 +217,9 @@
                     </div>
                 </div>
                 <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-orange-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button type="button" class="mobile-menu-button text-gray-700 hover:text-orange-600"
+                            aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -237,19 +285,20 @@
             </div>
             
             <!-- Filter Buttons -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in">
-                <button class="filter-btn active" data-filter="all">All Achievements</button>
-                <button class="filter-btn" data-filter="academic">Academic</button>
-                <button class="filter-btn" data-filter="international">International</button>
-                <button class="filter-btn" data-filter="sports">Sports</button>
-                <button class="filter-btn" data-filter="arts">Arts</button>
+            <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in" role="group" aria-label="Filter achievements by category">
+                <button type="button" class="filter-btn active" aria-pressed="true" data-filter="all">All Achievements</button>
+                <button type="button" class="filter-btn" aria-pressed="false" data-filter="academic">Academic</button>
+                <button type="button" class="filter-btn" aria-pressed="false" data-filter="international">International</button>
+                <button type="button" class="filter-btn" aria-pressed="false" data-filter="sports">Sports</button>
+                <button type="button" class="filter-btn" aria-pressed="false" data-filter="arts">Arts</button>
             </div>
+            <p id="filter-status" class="sr-only" role="status" aria-live="polite"></p>
             
             <!-- Achievement Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="achievements-grid">
                 <!-- Academic Achievements -->
                 <div class="achievement-card animate-fade-in" data-category="academic international">
-                    <img src="resources/students-achievement.jpg" alt="FLEX Finalists" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="825" height="759" src="resources/students-achievement.jpg" alt="FLEX Finalists" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">FLEX Program</span>
@@ -265,7 +314,7 @@
                 </div>
                 
                 <div class="achievement-card animate-fade-in" data-category="academic international">
-                    <img src="resources/classroom.jpg" alt="IELTS Success" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="445" height="364" src="resources/classroom.jpg" alt="IELTS Success" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">IELTS</span>
@@ -281,7 +330,7 @@
                 </div>
                 
                 <div class="achievement-card animate-fade-in" data-category="academic international">
-                    <img src="resources/graduation.jpg" alt="University Admissions" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1200" height="800" src="resources/graduation.jpg" alt="University Admissions" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">University</span>
@@ -298,7 +347,7 @@
                 
                 <!-- Sports Achievements -->
                 <div class="achievement-card animate-fade-in" data-category="sports">
-                    <img src="resources/sports.jpg" alt="Chess Champions" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1199" height="753" src="resources/sports.jpg" alt="Chess Champions" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">Chess</span>
@@ -314,7 +363,7 @@
                 </div>
                 
                 <div class="achievement-card animate-fade-in" data-category="sports">
-                    <img src="resources/sports.jpg" alt="Basketball Team" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1200" height="900" src="resources/basketball.jpg" alt="An indoor school basketball court" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">Basketball</span>
@@ -331,7 +380,7 @@
                 
                 <!-- Arts Achievements -->
                 <div class="achievement-card animate-fade-in" data-category="arts">
-                    <img src="resources/library.jpg" alt="Art Competition" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1024" height="683" src="resources/art-studio.jpg" alt="Pupils painting together in an art class" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">Art</span>
@@ -347,7 +396,7 @@
                 </div>
                 
                 <div class="achievement-card animate-fade-in" data-category="arts">
-                    <img src="resources/library.jpg" alt="Music Performance" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1200" height="675" src="resources/music-room.jpg" alt="A school music room with a piano and music stands" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">Music</span>
@@ -364,7 +413,7 @@
                 
                 <!-- Additional Academic Achievements -->
                 <div class="achievement-card animate-fade-in" data-category="academic">
-                    <img src="resources/science.jpg" alt="Science Olympiad" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1200" height="800" src="resources/science-lab.jpg" alt="A school science laboratory" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">Science</span>
@@ -380,7 +429,7 @@
                 </div>
                 
                 <div class="achievement-card animate-fade-in" data-category="academic">
-                    <img src="resources/science.jpg" alt="Math Competition" class="w-full h-48 object-cover">
+                    <img decoding="async" loading="lazy" width="1200" height="720" src="resources/library.jpg" alt="A school library used for study and revision" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="achievement-badge">Mathematics</span>
@@ -478,7 +527,7 @@
                         <li class="splide__slide">
                             <div class="testimonial-card mx-4">
                                 <div class="flex items-center mb-6">
-                                    <img src="resources/khushnud.jpg" alt="Student" class="student-avatar mr-4">
+                                    <img decoding="async" loading="lazy" width="320" height="320" src="resources/khushnud.jpg" alt="Khushnud Ochilov" class="student-avatar mr-4">
                                     <div>
                                         <h3 class="text-lg font-semibold text-gray-900">Khushnud Ochilov</h3>
                                         <p class="text-orange-600 font-medium">Davidson Class of 2026</p>
@@ -498,7 +547,8 @@
                         <li class="splide__slide">
                             <div class="testimonial-card mx-4">
                                 <div class="flex items-center mb-6">
-                                    <img src="resources/students-achievement.jpg" alt="Student" class="student-avatar mr-4">
+                                    <!-- Placeholder: a group photo was standing in for this student. Replace with her own photograph, with permission. -->
+                                    <img width="200" height="200" loading="lazy" decoding="async" src="resources/avatars/sabrina-bakhronbekova.svg" alt="Sabrina Bakhronbekova" class="student-avatar mr-4">
                                     <div>
                                         <h3 class="text-lg font-semibold text-gray-900">Sabrina Bakhronbekova</h3>
                                         <p class="text-orange-600 font-medium">FLEX Finalist '22</p>
@@ -518,7 +568,8 @@
                         <li class="splide__slide">
                             <div class="testimonial-card mx-4">
                                 <div class="flex items-center mb-6">
-                                    <img src="resources/students-achievement.jpg" alt="Student" class="student-avatar mr-4">
+                                    <!-- Placeholder: a group photo was standing in for this student. Replace with his own photograph, with permission. -->
+                                    <img width="200" height="200" loading="lazy" decoding="async" src="resources/avatars/oybek-jurabaev.svg" alt="Oybek Jurabaev" class="student-avatar mr-4">
                                     <div>
                                         <h3 class="text-lg font-semibold text-gray-900">Oybek Jurabaev</h3>
                                         <p class="text-orange-600 font-medium">Yonsei University '24</p>
@@ -538,7 +589,7 @@
                         <li class="splide__slide">
                             <div class="testimonial-card mx-4">
                                 <div class="flex items-center mb-6">
-                                    <img src="resources/edgar.jpg" alt="Student" class="student-avatar mr-4">
+                                    <img decoding="async" loading="lazy" width="274" height="307" src="resources/edgar.jpg" alt="Kasimov Edgar" class="student-avatar mr-4">
                                     <div>
                                         <h3 class="text-lg font-semibold text-gray-900">Kasimov Edgar</h3>
                                         <p class="text-orange-600 font-medium">University of British Columbia '26</p>
@@ -603,14 +654,14 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
                     <div class="space-y-2 text-gray-300">
-                        <p>Phone: +998 (97) 921-85-04</p>
-                        <p>Email: nigina.mukhsinova@school-37.com</p>
-                        <p>Principal: +998 (91) 557-29-47</p>
+                        <p>Phone: <a href="tel:+998979218504" class="hover:text-orange-400 transition-colors">+998 (97) 921-85-04</a></p>
+                        <p>Email: <a href="mailto:umeda.sharipova-school-37@mail.ru" class="hover:text-orange-400 transition-colors break-all">umeda.sharipova-school-37@mail.ru</a></p>
+                        <p>Principal: <a href="tel:+998915572947" class="hover:text-orange-400 transition-colors">+998 (91) 557-29-47</a></p>
                     </div>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Specialized School #37, Samarkand. All rights reserved.</p>
+                <p>&copy; 2026 Specialized School #37, Samarkand. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -627,53 +678,76 @@
         function initAchievementFilters() {
             const filterBtns = document.querySelectorAll('.filter-btn');
             const achievementCards = document.querySelectorAll('.achievement-card');
+            const grid = document.getElementById('achievements-grid');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function matches(card, filter) {
+                if (filter === 'all') return true;
+                const categories = (card.getAttribute('data-category') || '').split(' ');
+                return categories.includes(filter);
+            }
 
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const filter = this.getAttribute('data-filter');
-                    
+
                     // Update active button
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Filter cards
-                    achievementCards.forEach(card => {
-                        if (filter === 'all') {
-                            card.style.display = 'block';
-                            anime({
-                                targets: card,
-                                opacity: [0, 1],
-                                translateY: [20, 0],
-                                duration: 500,
-                                easing: 'easeOutExpo'
-                            });
-                        } else {
-                            const categories = card.getAttribute('data-category').split(' ');
-                            if (categories.includes(filter)) {
-                                card.style.display = 'block';
-                                anime({
-                                    targets: card,
-                                    opacity: [0, 1],
-                                    translateY: [20, 0],
-                                    duration: 500,
-                                    easing: 'easeOutExpo'
-                                });
-                            } else {
-                                anime({
-                                    targets: card,
-                                    opacity: [1, 0],
-                                    translateY: [0, -20],
-                                    duration: 300,
-                                    easing: 'easeInExpo',
-                                    complete: function() {
-                                        card.style.display = 'none';
-                                    }
-                                });
-                            }
-                        }
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-pressed', 'false');
                     });
+                    this.classList.add('active');
+                    this.setAttribute('aria-pressed', 'true');
+
+                    // Show or hide purely via a class. Visibility never depends on an
+                    // animation callback, so a throttled or interrupted animation
+                    // (backgrounded tab, blocked CDN) cannot strand a card invisible.
+                    const shown = [];
+                    achievementCards.forEach(card => {
+                        const visible = matches(card, filter);
+                        card.classList.toggle('is-filtered-out', !visible);
+                        card.removeAttribute('style');
+                        if (visible) shown.push(card);
+                    });
+
+                    if (grid) {
+                        grid.setAttribute('aria-busy', 'false');
+                        announce(shown.length, filter);
+                    }
+
+                    // The fade is decoration layered on top of an already-correct state.
+                    // It is skipped while the tab is in the background: animation frames
+                    // are throttled there, so starting a fade from opacity 0 would leave
+                    // the cards invisible until the visitor came back to the tab.
+                    if (!reduceMotion && !document.hidden && typeof anime !== 'undefined' && shown.length) {
+                        anime({
+                            targets: shown,
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            duration: 400,
+                            delay: anime.stagger(40),
+                            easing: 'easeOutExpo'
+                        });
+                    }
                 });
             });
+
+            // Belt and braces: if a fade was ever interrupted, returning to the tab
+            // clears whatever inline styles it left behind.
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) return;
+                achievementCards.forEach(card => {
+                    if (!card.classList.contains('is-filtered-out')) card.removeAttribute('style');
+                });
+            });
+
+            // Tell screen readers how many results the filter produced
+            function announce(count, filter) {
+                let region = document.getElementById('filter-status');
+                if (!region) return;
+                const label = filter === 'all' ? 'all categories' : filter;
+                region.textContent = `Showing ${count} achievement${count === 1 ? '' : 's'} in ${label}.`;
+            }
         }
 
         function initTestimonialsSlider() {

@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#D2691E">
     <title>Contact School #37 - Samarkand | Get in Touch</title>
     <meta name="description" content="Contact Specialized School #37 in Samarkand. Get in touch with our staff, schedule a visit, or inquire about admissions. We're here to help with your educational needs.">
-    
+    <link rel="canonical" href="https://school-37.com/contact.html">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+    <!-- Social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Specialized School #37, Samarkand">
+    <meta property="og:title" content="Contact School #37 - Samarkand">
+    <meta property="og:description" content="Get in touch about admissions, schedule a visit, or reach our staff directly.">
+    <meta property="og:url" content="https://school-37.com/contact.html">
+    <meta property="og:image" content="https://school-37.com/resources/hero-school.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Contact School #37 - Samarkand">
+    <meta name="twitter:description" content="Get in touch about admissions, schedule a visit, or reach our staff directly.">
+    <meta name="twitter:image" content="https://school-37.com/resources/hero-school.jpg">
+
+    <!-- Progressive enhancement flag: CSS hides content for animation only when JS is running -->
+    <script>document.documentElement.classList.add('js');</script>
+
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
+
     <!-- Core Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
@@ -22,6 +43,9 @@
             --amber: #FFB347;
             --cream: #FDF5E6;
             --charcoal: #36454F;
+            /* Opt out of browser auto-darkening: the cream and terracotta palette
+               inverts badly when a browser forces a dark theme onto the page. */
+            color-scheme: light;
         }
         
         body {
@@ -111,17 +135,34 @@
             transform: none;
         }
         
-        .animate-fade-in {
+        /* Content is hidden for the reveal animation only while JS is running,
+           so the page is still readable if scripts fail or are blocked. */
+        .js .animate-fade-in {
             opacity: 0;
             transform: translateY(30px);
         }
-        
-        .animate-fade-in.visible {
+
+        .js .animate-fade-in.visible {
             opacity: 1;
             transform: translateY(0);
             transition: all 0.6s ease;
         }
-        
+
+        @media (prefers-reduced-motion: reduce) {
+            .js .animate-fade-in {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .contact-card,
+            .submit-btn,
+            .inquiry-type-btn,
+            .chat-button {
+                transition: none !important;
+            }
+        }
+
         .map-container {
             height: 400px;
             border-radius: 16px;
@@ -272,8 +313,9 @@
                     </div>
                 </div>
                 <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-orange-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button type="button" class="mobile-menu-button text-gray-700 hover:text-orange-600"
+                            aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -327,8 +369,8 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">Call Us</h3>
-                            <p class="text-gray-600">General: +998 (97) 921-85-04</p>
-                            <p class="text-gray-600">Principal: +998 (91) 557-29-47</p>
+                            <p class="text-gray-600">General: <a href="tel:+998979218504" class="text-orange-600 hover:underline">+998 (97) 921-85-04</a></p>
+                            <p class="text-gray-600">Principal: <a href="tel:+998915572947" class="text-orange-600 hover:underline">+998 (91) 557-29-47</a></p>
                             <p class="text-gray-600">Mon-Fri: 8:00 AM - 5:00 PM</p>
                         </div>
                     </div>
@@ -343,8 +385,8 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">Email Us</h3>
-                            <p class="text-gray-600">umeda.sharipova-school-37@mail.ru</p>
-                            <p class="text-gray-600">vladimirovna.natalya-school-37@mail.ru</p>
+                            <p class="text-gray-600"><a href="mailto:umeda.sharipova-school-37@mail.ru" class="text-orange-600 hover:underline break-all">umeda.sharipova-school-37@mail.ru</a></p>
+                            <p class="text-gray-600"><a href="mailto:vladimirovna.natalya-school-37@mail.ru" class="text-orange-600 hover:underline break-all">vladimirovna.natalya-school-37@mail.ru</a></p>
                             <p class="text-gray-600">We respond within 24 hours</p>
                         </div>
                     </div>
@@ -373,27 +415,45 @@
                         </div>
                     </div>
                     
+                    <!-- =====================================================================
+                         TODO вЂ” THIS FORM DOES NOT SEND ANYTHING. READ BEFORE RELYING ON IT.
+
+                         The form has no `action` and no `method`. The submit handler at the
+                         bottom of this file waits two seconds and then shows the "Message
+                         Sent Successfully!" banner. Nothing is transmitted or stored, so
+                         every enquiry a visitor has ever submitted was silently discarded
+                         while they were told it had been received.
+
+                         To make it real, pick one:
+                           1. A form service that works on static hosting, e.g.
+                              <form action="https://formspree.io/f/YOUR_ID" method="POST">
+                              and delete the fake setTimeout success path below.
+                           2. A mailto: fallback that opens the visitor's email client.
+                           3. Remove the form and point people at the phone/email above.
+
+                         Until then, anyone relying on this form is not being heard.
+                         ===================================================================== -->
                     <form id="contact-form" class="space-y-6">
                         <!-- Inquiry Type Selection -->
                         <div>
-                            <label class="form-label mb-4">Type of Inquiry</label>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="inquiry-type-btn active" data-type="general">
-                                    <div class="font-semibold mb-1">General Inquiry</div>
-                                    <div class="text-sm opacity-75">General questions</div>
-                                </div>
-                                <div class="inquiry-type-btn" data-type="admission">
-                                    <div class="font-semibold mb-1">Admission</div>
-                                    <div class="text-sm opacity-75">Enrollment questions</div>
-                                </div>
-                                <div class="inquiry-type-btn" data-type="student-support">
-                                    <div class="font-semibold mb-1">Student Support</div>
-                                    <div class="text-sm opacity-75">Academic help</div>
-                                </div>
-                                <div class="inquiry-type-btn" data-type="faculty">
-                                    <div class="font-semibold mb-1">Faculty</div>
-                                    <div class="text-sm opacity-75">Teaching positions</div>
-                                </div>
+                            <span class="form-label mb-4" id="inquiry-type-label">Type of Inquiry</span>
+                            <div class="grid grid-cols-2 gap-4" role="group" aria-labelledby="inquiry-type-label">
+                                <button type="button" class="inquiry-type-btn active" aria-pressed="true" data-type="general">
+                                    <span class="font-semibold mb-1 block">General Inquiry</span>
+                                    <span class="text-sm opacity-75 block">General questions</span>
+                                </button>
+                                <button type="button" class="inquiry-type-btn" aria-pressed="false" data-type="admission">
+                                    <span class="font-semibold mb-1 block">Admission</span>
+                                    <span class="text-sm opacity-75 block">Enrollment questions</span>
+                                </button>
+                                <button type="button" class="inquiry-type-btn" aria-pressed="false" data-type="student-support">
+                                    <span class="font-semibold mb-1 block">Student Support</span>
+                                    <span class="text-sm opacity-75 block">Academic help</span>
+                                </button>
+                                <button type="button" class="inquiry-type-btn" aria-pressed="false" data-type="faculty">
+                                    <span class="font-semibold mb-1 block">Faculty</span>
+                                    <span class="text-sm opacity-75 block">Teaching positions</span>
+                                </button>
                             </div>
                             <input type="hidden" id="inquiry-type" name="inquiry-type" value="general">
                         </div>
@@ -535,42 +595,43 @@
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="contact-card text-center animate-fade-in">
-                    <img src="resources/principal.jpg" alt="Principal" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
+                    <img decoding="async" loading="lazy" width="900" height="900" src="resources/principal.jpg" alt="Akramova Zamira, School Principal" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Akramova Zamira</h3>
                     <p class="text-orange-600 font-medium mb-3">School Principal</p>
                     <div class="space-y-2 text-sm text-gray-600">
-                        <p>+998 (91) 557-29-47</p>
-                        <p>zamira.akramova-school-37@mail.ru</p>
+                        <p><a href="tel:+998915572947" class="hover:text-orange-600 transition-colors">+998 (91) 557-29-47</a></p>
+                        <p><a href="mailto:zamira.akramova-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">zamira.akramova-school-37@mail.ru</a></p>
                     </div>
                 </div>
                 
                 <div class="contact-card text-center animate-fade-in">
-                    <img src="resources/teacher-female.jpg" alt="Counselor" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
+                    <img decoding="async" loading="lazy" width="600" height="600" src="resources/teacher-female.jpg" alt="Mukhsinova Nigina, School Counselor" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Mukhsinova Nigina</h3>
                     <p class="text-orange-600 font-medium mb-3">School Counselor</p>
                     <div class="space-y-2 text-sm text-gray-600">
-                        <p>+998 (97) 921-85-04</p>
-                        <p>nigina.mukhsinova-school-37@mail.ru</p>
+                        <p><a href="tel:+998979218504" class="hover:text-orange-600 transition-colors">+998 (97) 921-85-04</a></p>
+                        <p><a href="mailto:nigina.mukhsinova-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">nigina.mukhsinova-school-37@mail.ru</a></p>
                     </div>
                 </div>
                 
                 <div class="contact-card text-center animate-fade-in">
-                    <img src="resources/teacher-male.jpg" alt="Head Teacher" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
+                    <!-- Placeholder: awaiting a real photograph of Sharipova Umeda. -->
+                    <img width="200" height="200" loading="lazy" decoding="async" src="resources/avatars/umeda-sharipova.svg" alt="Sharipova Umeda" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Sharipova Umeda</h3>
                     <p class="text-orange-600 font-medium mb-3">Head Teacher</p>
                     <div class="space-y-2 text-sm text-gray-600">
-                        <p>+998 (97) 921-53-48</p>
-                        <p>umeda.sharipova-school-37@mail.ru</p>
+                        <p><a href="tel:+998979215348" class="hover:text-orange-600 transition-colors">+998 (97) 921-53-48</a></p>
+                        <p><a href="mailto:umeda.sharipova-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">umeda.sharipova-school-37@mail.ru</a></p>
                     </div>
                 </div>
                 
                 <div class="contact-card text-center animate-fade-in">
-                    <img src="resources/natasha.jpg" alt="Head Teacher" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
+                    <img decoding="async" loading="lazy" width="600" height="600" src="resources/natasha.jpg" alt="Ugryumova Natalya, Head Teacher" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-orange-200">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Ugryumova Natalya</h3>
                     <p class="text-orange-600 font-medium mb-3">Head Teacher</p>
                     <div class="space-y-2 text-sm text-gray-600">
-                        <p>+998 (95) 558-23-48</p>
-                        <p>vladimirovna.natalya-school-37@mail.ru</p>
+                        <p><a href="tel:+998955582348" class="hover:text-orange-600 transition-colors">+998 (95) 558-23-48</a></p>
+                        <p><a href="mailto:vladimirovna.natalya-school-37@mail.ru" class="hover:text-orange-600 transition-colors break-all">vladimirovna.natalya-school-37@mail.ru</a></p>
                     </div>
                 </div>
              
@@ -584,33 +645,34 @@
             <div class="chat-header">
                 <div class="flex items-center justify-between">
                     <span>School #37 Support</span>
-                    <button id="close-chat" class="text-white hover:text-gray-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" id="close-chat" class="text-white hover:text-gray-200" aria-label="Close chat">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                     </button>
                 </div>
                 <p class="text-sm opacity-90 mt-1">We're here to help!</p>
             </div>
-            <div class="chat-messages" id="chat-messages">
+            <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat conversation">
                 <div class="bg-gray-100 p-3 rounded-lg mb-3">
                     <p class="text-sm">Hello! Welcome to School #37. How can I help you today?</p>
                 </div>
             </div>
             <div class="chat-input-area">
+                <label for="chat-input" class="sr-only">Type your message</label>
                 <input type="text" class="chat-input" id="chat-input" placeholder="Type your message...">
-                <button class="chat-send" id="chat-send">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="button" class="chat-send" id="chat-send" aria-label="Send message">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                     </svg>
                 </button>
             </div>
         </div>
-        <div class="chat-button" id="chat-button">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button type="button" class="chat-button" id="chat-button" aria-label="Open support chat" aria-expanded="false" aria-controls="chat-panel">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
             </svg>
-        </div>
+        </button>
     </div>
 
     <!-- Footer -->
@@ -633,14 +695,14 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
                     <div class="space-y-2 text-gray-300">
-                        <p>Phone: +998 (97) 921-85-04</p>
-                        <p>Email: nigina.mukhsinova@school-37.com</p>
-                        <p>Principal: +998 (91) 557-29-47</p>
+                        <p>Phone: <a href="tel:+998979218504" class="hover:text-orange-400 transition-colors">+998 (97) 921-85-04</a></p>
+                        <p>Email: <a href="mailto:umeda.sharipova-school-37@mail.ru" class="hover:text-orange-400 transition-colors break-all">umeda.sharipova-school-37@mail.ru</a></p>
+                        <p>Principal: <a href="tel:+998915572947" class="hover:text-orange-400 transition-colors">+998 (91) 557-29-47</a></p>
                     </div>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Specialized School #37, Samarkand. All rights reserved.</p>
+                <p>&copy; 2026 Specialized School #37, Samarkand. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -667,9 +729,13 @@
                     const type = this.getAttribute('data-type');
                     
                     // Update active button
-                    inquiryTypeBtns.forEach(b => b.classList.remove('active'));
+                    inquiryTypeBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
                     this.classList.add('active');
-                    
+                    this.setAttribute('aria-pressed', 'true');
+
                     // Update hidden input
                     inquiryTypeInput.value = type;
                     
@@ -704,7 +770,8 @@
                 btnText.classList.add('hidden');
                 btnLoading.classList.remove('hidden');
                 
-                // Simulate form submission
+                // TODO: this is a simulated submission вЂ” nothing is actually sent.
+                // See the note above the <form> element.
                 setTimeout(() => {
                     // Show success message
                     successMessage.style.display = 'block';
@@ -760,7 +827,7 @@
             const map = L.map('map').setView(samarkandCoords, 15);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
+                attribution: 'В© OpenStreetMap contributors'
             }).addTo(map);
             
             // Add marker for the school
@@ -784,12 +851,27 @@
             const chatMessages = document.getElementById('chat-messages');
 
             // Toggle chat panel
+            function setChatOpen(open) {
+                chatPanel.style.display = open ? 'flex' : 'none';
+                chatButton.setAttribute('aria-expanded', String(open));
+                if (open) chatInput.focus();
+            }
+
             chatButton.addEventListener('click', () => {
-                chatPanel.style.display = chatPanel.style.display === 'flex' ? 'none' : 'flex';
+                setChatOpen(chatPanel.style.display !== 'flex');
             });
 
             closeChat.addEventListener('click', () => {
-                chatPanel.style.display = 'none';
+                setChatOpen(false);
+                chatButton.focus();
+            });
+
+            // Escape closes the panel, as people expect of any overlay
+            chatPanel.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    setChatOpen(false);
+                    chatButton.focus();
+                }
             });
 
             // Send message
@@ -797,10 +879,14 @@
                 const message = chatInput.value.trim();
                 if (!message) return;
 
-                // Add user message
+                // Add user message. Built with textContent, never innerHTML, so
+                // whatever the visitor types is treated as text and not as markup.
                 const userMessage = document.createElement('div');
                 userMessage.className = 'bg-orange-100 p-3 rounded-lg mb-3 ml-12';
-                userMessage.innerHTML = `<p class="text-sm">${message}</p>`;
+                const userText = document.createElement('p');
+                userText.className = 'text-sm';
+                userText.textContent = message;
+                userMessage.appendChild(userText);
                 chatMessages.appendChild(userMessage);
 
                 // Clear input
@@ -812,17 +898,20 @@
                     botMessage.className = 'bg-gray-100 p-3 rounded-lg mb-3';
                     
                     let response = "Thank you for your message. Our team will get back to you soon.";
-                    
+
                     // Simple keyword-based responses
                     if (message.toLowerCase().includes('admission')) {
-                        response = "For admission inquiries, please fill out our contact form or call +998 (97) 921-85-04. We welcome new students!";
+                        response = "For admission inquiries, please call +998 (97) 921-85-04 or email umeda.sharipova-school-37@mail.ru. We welcome new students!";
                     } else if (message.toLowerCase().includes('visit')) {
                         response = "You're welcome to visit our school! Please call ahead to schedule an appointment. We're located at Makhmud Koshgari 61.";
                     } else if (message.toLowerCase().includes('flex')) {
-                        response = "Our FLEX program is very successful! We have 8 finalists in 2023-2024. Contact our counselor for more information.";
+                        response = "Our FLEX programme is very successful. Contact our school counsellor for details of this year's finalists.";
                     }
-                    
-                    botMessage.innerHTML = `<p class="text-sm">${response}</p>`;
+
+                    const botText = document.createElement('p');
+                    botText.className = 'text-sm';
+                    botText.textContent = response;
+                    botMessage.appendChild(botText);
                     chatMessages.appendChild(botMessage);
                     
                     // Scroll to bottom

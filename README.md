@@ -1,204 +1,111 @@
-# School #37 Website - Samarkand, Uzbekistan
+# School #37 Website — Samarkand, Uzbekistan
 
-A modern, responsive website for Specialized School #37 in Samarkand, showcasing the school's excellence in education since 1936.
+A static website for Specialized School #37 in Samarkand, a school founded in 1936
+with a specialised focus on English language education.
 
-## 🌟 Features
+Live at **https://school-37.com** (GitHub Pages, domain set by `CNAME`).
 
-### Interactive Components
-- **Video Gallery**: Integrated YouTube videos with playlist functionality
-- **Achievement Showcase**: Filterable student achievements with detailed information
-- **Interactive School Tour**: Clickable facilities with detailed descriptions
-- **Smart Contact Form**: Dynamic form fields based on inquiry type
-- **Live Chat Simulation**: Interactive chat widget for immediate support
-- **Statistics Dashboard**: Animated counters and data visualizations
+## Running it locally
 
-### Design Highlights
-- **Modern Aesthetic**: Clean, professional design with warm Uzbek-inspired colors
-- **Responsive Layout**: Perfect display on all devices (desktop, tablet, mobile)
-- **Smooth Animations**: Scroll-triggered animations and hover effects
-- **Typography**: Elegant combination of Playfair Display, Inter, and Crimson Text fonts
-- **Color Palette**: Terracotta, teal, amber, and cream colors reflecting Samarkand's heritage
+There is no build step. Any static file server works:
 
-### Technical Features
-- **Performance Optimized**: Fast loading with optimized images and efficient code
-- **SEO Friendly**: Proper meta tags, semantic HTML, and structured data
-- **Accessibility**: WCAG 2.1 compliant with keyboard navigation support
-- **Cross-browser Compatible**: Works on all modern browsers
-- **Progressive Loading**: Enhanced user experience with smooth transitions
+```bash
+python -m http.server 8000
+# then open http://localhost:8000
+```
 
-## 📁 File Structure
+Opening the `.html` files directly with `file://` mostly works, but relative
+paths and the map behave better over HTTP.
+
+## File structure
 
 ```
 /
-├── index.html              # Main landing page
-├── about.html              # School information and history
-├── achievements.html       # Student accomplishments
-├── contact.html           # Contact form and information
-├── main.js               # Main JavaScript functionality
-├── resources/            # Images and media assets
-│   ├── hero-school.jpg   # Main hero image
-│   ├── principal.jpg     # Principal photo
-│   ├── classroom.jpg     # Classroom scene
-│   ├── library-modern.jpg # Modern library
-│   ├── students-achievement.jpg # Student success
-│   ├── graduation.jpg    # Graduation ceremony
-│   ├── sports.jpg        # Sports activities
-│   ├── science.jpg       # Science laboratory
-│   ├── teacher-male.jpg  # Male teacher portrait
-│   └── teacher-female.jpg # Female teacher portrait
-├── design.md             # Design philosophy documentation
-├── interaction.md        # Interactive components documentation
-└── README.md            # This file
+├── index.html           # Home: hero, statistics, video gallery, achievements carousel
+├── about.html           # History timeline, mission, facilities tabs, staff, demographics chart
+├── achievements.html    # Filterable achievements, admissions charts, student testimonials
+├── contact.html         # Contact details, form, Leaflet map, chat widget
+├── 404.html             # Not-found page
+├── main.js              # Shared behaviour across all pages
+├── favicon.svg
+├── robots.txt
+├── sitemap.xml
+├── CNAME                # Custom domain for GitHub Pages
+├── resources/           # Photographs (optimised; see "Images" below)
+│   └── _originals/      # Pre-compression originals — local only, not committed
+├── design.md            # Design philosophy notes
+├── interaction.md       # Notes on the interactive components
+└── outline.md           # Content outline
 ```
 
-## 🚀 Deployment
+## How the pages are built
 
-### Netlify Deployment
-1. Download the zip file containing all website files
-2. Go to [Netlify](https://netlify.com) and create an account (if you don't have one)
-3. Drag and drop the zip file to Netlify's deploy area
-4. Your website will be live in seconds with a custom URL
+Everything is plain HTML with Tailwind utility classes. There is no bundler, no
+framework and no package manager — each page carries its own `<style>` block and,
+where it needs them, its own inline `<script>`. Shared behaviour lives in `main.js`.
 
-### Alternative Deployment Options
-- **GitHub Pages**: Push files to a GitHub repository and enable Pages
-- **Vercel**: Similar to Netlify with drag-and-drop deployment
-- **Traditional Hosting**: Upload files via FTP to any web server
+Libraries are loaded from CDNs, and each page loads only what it actually uses:
 
-## 🎨 Design Philosophy
+| Library | Used by | For |
+|---|---|---|
+| Tailwind (Play CDN) | all pages | utility classes |
+| anime.js | all pages | fade transitions |
+| Splide | index, achievements | carousels |
+| ECharts | about, achievements | charts |
+| p5.js | index | hero particles |
+| Leaflet | contact | map |
 
-The website design draws inspiration from:
-- **Samarkand Architecture**: Warm terracotta and golden colors reflecting the city's historic buildings
-- **Educational Excellence**: Clean, professional layouts that convey academic quality
-- **Cultural Heritage**: Subtle Uzbek patterns and traditional elements
-- **Modern Innovation**: Contemporary web design with cutting-edge interactions
+> **Note:** Tailwind's Play CDN compiles styles in the browser and prints a console
+> warning that it is not for production. Replacing it with a pre-built stylesheet
+> would remove the warning and make first paint noticeably faster.
 
-## 📊 Interactive Elements
+## Images
 
-### 1. Video Gallery (index.html)
-- Integrated YouTube videos with custom controls
-- Playlist functionality to switch between videos
-- Smooth transitions and professional presentation
+Source photographs are large. Everything in `resources/` has been resized to the
+largest size the layout actually renders (x2 for high-density screens) and saved as
+progressive JPEG at quality 80. This took the image payload from **18.5 MB to 1.3 MB**.
 
-### 2. Achievement Showcase (achievements.html)
-- Filter system for different achievement categories
-- Interactive charts showing university admissions data
-- Student testimonials with smooth carousel
+Pre-compression originals are kept in `resources/_originals/`, which is git-ignored —
+they exist only on the machine that ran the optimisation.
 
-### 3. Facilities Tour (about.html)
-- Clickable facility categories with detailed information
-- Interactive tabs showing different school areas
-- Responsive design for all screen sizes
+If you add a photo:
 
-### 4. Smart Contact Form (contact.html)
-- Dynamic form fields based on inquiry type
-- Real-time validation and user feedback
-- Interactive map with school location
+1. Resize it to at most ~1200px wide (2048px for a full-bleed hero).
+2. Save as JPEG, quality ~80, progressive.
+3. Add `width`, `height`, `loading="lazy"` and `decoding="async"` to the `<img>` tag.
+   The intrinsic `width`/`height` prevent the page jumping about as images load.
 
-### 5. Live Chat Widget (contact.html)
-- Simulated chat functionality for immediate support
-- Responsive design that works on mobile devices
-- Professional chat interface with school branding
+## Known issues — read before making changes
 
-## 📱 Responsive Design
+- **The contact form does not send anything.** It has no `action`, and the submit
+  handler shows a success message after a two-second delay without transmitting
+  the data. See the `TODO` comment above the `<form>` in `contact.html`. This
+  needs a form service (Formspree, Web3Forms), a `mailto:` fallback, or removal.
+- **`files/transcripts/` contains personal student documents** and is served
+  publicly by GitHub Pages — including a PDF named after an individual pupil.
+  Nothing on the site links to it, but anyone with the URL can download it.
+  The folder is listed in `.gitignore`, which stops *new* files being added;
+  it does **not** untrack or unpublish what is already committed. Removing it
+  properly means deleting the files, committing, and rewriting history so the
+  old commits no longer carry them.
+- **Some staff and student photographs do not match the person named beside them**,
+  and some facility photographs are stand-ins from other parts of the school. See
+  `PHOTO-CREDITS.md` for what is a genuine photograph and what is a placeholder.
+- **A few figures contradict each other** between pages (graduate counts, FLEX
+  finalist years, IELTS totals). These need someone with the real numbers to settle
+  them; they are listed in `PHOTO-CREDITS.md` alongside the photo gaps.
 
-The website is fully responsive and optimized for:
-- **Desktop Computers**: Full-featured experience with all animations
-- **Tablets**: Optimized layouts with touch-friendly interactions
-- **Mobile Phones**: Streamlined design with easy navigation
+## Accessibility and progressive enhancement
 
-## 🔧 Technical Implementation
+- Content is only hidden for scroll animations when JavaScript is running (the
+  `.js` class on `<html>`), so a script failure leaves a readable page rather than
+  a blank one.
+- `prefers-reduced-motion` disables the fades, the carousel autoplay and the hero
+  particles.
+- Interactive controls are real `<button>` elements with accessible names, so the
+  site can be operated from the keyboard.
 
-### Libraries Used
-- **Tailwind CSS**: Utility-first CSS framework
-- **Anime.js**: Smooth animations and transitions
-- **Splide.js**: Touch-friendly carousels and sliders
-- **ECharts.js**: Interactive data visualizations
-- **p5.js**: Creative coding for particle effects
-- **Leaflet**: Interactive maps
+## Deployment
 
-### Performance Features
-- **Lazy Loading**: Images load as needed
-- **Optimized Images**: Compressed without quality loss
-- **Minified Code**: Efficient JavaScript and CSS
-- **CDN Delivery**: Fast loading of external libraries
-
-## 🎯 Content Strategy
-
-### Pages Overview
-
-#### Index (Homepage)
-- Hero section with school introduction
-- Video gallery with YouTube integration
-- Key statistics and achievements
-- Mission statement and call-to-action
-
-#### About
-- School history timeline (1936-present)
-- Mission and vision statements
-- Interactive facilities tour
-- Staff directory with photos
-- School statistics and demographics
-
-#### Achievements
-- Student success stories
-- University admissions data
-- Interactive charts and visualizations
-- Student testimonials
-- Academic performance metrics
-
-#### Contact
-- Multiple contact methods
-- Interactive contact form
-- School location map
-- Staff contact information
-- Live chat simulation
-
-## 📈 SEO & Analytics Ready
-
-The website includes:
-- **Meta Tags**: Proper title, description, and keywords
-- **Semantic HTML**: Structured content for search engines
-- **Open Graph**: Social media sharing optimization
-- **Schema Markup**: Structured data for rich snippets
-- **Fast Loading**: Optimized for Core Web Vitals
-
-## 🎨 Visual Assets
-
-All images are custom-generated or carefully selected to:
-- Represent the school's diverse community
-- Showcase modern educational environments
-- Maintain consistent visual style
-- Load quickly without quality compromise
-
-## 🔍 Browser Support
-
-- Chrome 80+
-- Firefox 75+
-- Safari 13+
-- Edge 80+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 📞 Support & Maintenance
-
-The website is designed to be:
-- **Easy to Update**: Clear file structure and documentation
-- **Low Maintenance**: Modern, stable technologies
-- **Scalable**: Easy to add new features or content
-- **Accessible**: Compliant with web accessibility standards
-
-## 🌟 Future Enhancements
-
-Potential additions for future versions:
-- Multi-language support (Uzbek, Russian, English)
-- Online application system
-- Student portal integration
-- Event calendar
-- News and announcements section
-- Photo galleries with school events
-- Virtual tour functionality
-
----
-
-**Built with ❤️ for Specialized School #37, Samarkand**
-
-*This website represents the excellence and dedication of one of Uzbekistan's most prestigious educational institutions, founded in 1936.*
+Pushing to `main` publishes to GitHub Pages automatically. The `CNAME` file keeps
+the custom domain attached — do not delete it.

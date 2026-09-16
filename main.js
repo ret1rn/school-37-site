@@ -11,8 +11,28 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
 });
 
+// True when the visitor has asked the OS for reduced motion
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// Reveal every animated element immediately. Used as the fallback whenever
+// the scroll animation cannot run, so content is never left invisible.
+function revealAll() {
+    document.querySelectorAll('.animate-fade-in').forEach(el => el.classList.add('visible'));
+}
+
 // Scroll-triggered animations
 function initScrollAnimations() {
+    const elements = document.querySelectorAll('.animate-fade-in');
+    if (!elements.length) return;
+
+    // No observer support, or the visitor prefers reduced motion: show everything.
+    if (!('IntersectionObserver' in window) || prefersReducedMotion()) {
+        revealAll();
+        return;
+    }
+
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -22,34 +42,42 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                
-                // Stagger animation for multiple elements
-                const siblings = entry.target.parentElement.querySelectorAll('.animate-fade-in');
-                siblings.forEach((sibling, index) => {
-                    setTimeout(() => {
-                        sibling.classList.add('visible');
-                    }, index * 100);
-                });
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Observe all elements with fade-in animation
-    document.querySelectorAll('.animate-fade-in').forEach(el => {
-        observer.observe(el);
+    elements.forEach(el => observer.observe(el));
+
+    // Safety net: if the observer has not reported anything shortly after load
+    // (a backgrounded tab throttles its callbacks), reveal the page anyway.
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            if (!document.querySelector('.animate-fade-in.visible')) revealAll();
+        }, 1200);
     });
 }
 
 // Animated statistics counters
 function initStatsCounters() {
     const counters = document.querySelectorAll('.stats-counter');
+    if (!counters.length) return;
+
+    if (!('IntersectionObserver' in window) || prefersReducedMotion()) {
+        counters.forEach(c => {
+            c.textContent = c.getAttribute('data-target');
+        });
+        return;
+    }
+
     const counterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const counter = entry.target;
-                const target = parseInt(counter.getAttribute('data-target'));
-                animateCounter(counter, target);
+                const target = parseInt(counter.getAttribute('data-target'), 10);
                 counterObserver.unobserve(counter);
+                if (Number.isNaN(target)) return;
+                animateCounter(counter, target);
             }
         });
     }, { threshold: 0.5 });
@@ -82,53 +110,76 @@ function initVideoGallery() {
     const videoTitle = document.getElementById('video-title');
     const videoDescription = document.getElementById('video-description');
 
+    if (!videoItems.length || !mainVideo) return;
+
+    function selectVideo(item) {
+        // Move the active state to the chosen item
+        videoItems.forEach(v => {
+            v.classList.remove('active');
+            v.setAttribute('aria-selected', 'false');
+        });
+        item.classList.add('active');
+        item.setAttribute('aria-selected', 'true');
+
+        const videoId = item.getAttribute('data-video');
+        const title = item.getAttribute('data-title');
+        const description = item.getAttribute('data-description');
+
+        mainVideo.src = `https://www.youtube-nocookie.com/embed/${videoId}`;
+        mainVideo.title = title;
+
+        if (!videoTitle || !videoDescription) return;
+
+        if (prefersReducedMotion() || typeof anime === 'undefined') {
+            videoTitle.textContent = title;
+            videoDescription.textContent = description;
+            return;
+        }
+
+        // Cross-fade the caption
+        anime({
+            targets: [videoTitle, videoDescription],
+            opacity: [1, 0],
+            duration: 300,
+            easing: 'easeInOutQuad',
+            complete: function() {
+                videoTitle.textContent = title;
+                videoDescription.textContent = description;
+
+                anime({
+                    targets: [videoTitle, videoDescription],
+                    opacity: [0, 1],
+                    duration: 300,
+                    easing: 'easeInOutQuad'
+                });
+            }
+        });
+    }
+
     videoItems.forEach(item => {
         item.addEventListener('click', function() {
-            // Remove active class from all items
-            videoItems.forEach(v => v.classList.remove('active'));
-            
-            // Add active class to clicked item
-            this.classList.add('active');
-            
-            // Update video
-            const videoId = this.getAttribute('data-video');
-            const title = this.getAttribute('data-title');
-            const description = this.getAttribute('data-description');
-            
-            // Update iframe src
-            mainVideo.src = `https://www.youtube.com/embed/${videoId}`;
-            
-            // Update text content with animation
-            anime({
-                targets: [videoTitle, videoDescription],
-                opacity: [1, 0],
-                duration: 300,
-                easing: 'easeInOutQuad',
-                complete: function() {
-                    videoTitle.textContent = title;
-                    videoDescription.textContent = description;
-                    
-                    anime({
-                        targets: [videoTitle, videoDescription],
-                        opacity: [0, 1],
-                        duration: 300,
-                        easing: 'easeInOutQuad'
-                    });
-                }
-            });
+            selectVideo(this);
+        });
+        // Keyboard support: the playlist items behave like a tab list
+        item.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectVideo(this);
+            }
         });
     });
 }
 
 // Achievements slider
 function initAchievementsSlider() {
+    if (typeof Splide === 'undefined') return;
     if (document.getElementById('achievements-slider')) {
         new Splide('#achievements-slider', {
             type: 'loop',
             perPage: 3,
             perMove: 1,
             gap: '2rem',
-            autoplay: true,
+            autoplay: !prefersReducedMotion(),
             interval: 4000,
             pauseOnHover: true,
             breakpoints: {
@@ -147,16 +198,21 @@ function initAchievementsSlider() {
 function initParticles() {
     const particlesContainer = document.getElementById('particles');
     if (!particlesContainer) return;
+    // The particles are pure decoration: skip them entirely when the visitor
+    // prefers reduced motion, or when p5 failed to load from the CDN.
+    if (prefersReducedMotion() || typeof p5 === 'undefined') return;
 
     // Create p5.js sketch for particles
     const sketch = (p) => {
         let particles = [];
-        const numParticles = 50;
+        // Fewer particles on phones, where the battery cost matters most
+        const numParticles = window.innerWidth < 768 ? 25 : 50;
 
         p.setup = function() {
             const canvas = p.createCanvas(window.innerWidth, window.innerHeight);
             canvas.parent('particles');
-            
+            p.frameRate(30);
+
             // Create particles
             for (let i = 0; i < numParticles; i++) {
                 particles.push(new Particle(p));
@@ -164,8 +220,11 @@ function initParticles() {
         };
 
         p.draw = function() {
+            // Stop burning frames while the tab is in the background
+            if (document.hidden) return;
+
             p.clear();
-            
+
             // Update and display particles
             particles.forEach(particle => {
                 particle.update();
@@ -212,45 +271,67 @@ function initParticles() {
 
 // Mobile menu functionality
 function initMobileMenu() {
-    const mobileMenuButton = document.querySelector('.md\\:hidden button');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    
-    if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', function() {
-            // Create mobile menu if it doesn't exist
-            if (!document.querySelector('.mobile-menu')) {
-                createMobileMenu();
-            }
-            
-            const menu = document.querySelector('.mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-    }
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    if (!mobileMenuButton) return;
+
+    mobileMenuButton.addEventListener('click', function() {
+        // Create mobile menu if it doesn't exist
+        if (!document.querySelector('.mobile-menu')) {
+            createMobileMenu();
+        }
+
+        const menu = document.querySelector('.mobile-menu');
+        const nowHidden = menu.classList.toggle('hidden');
+        mobileMenuButton.setAttribute('aria-expanded', String(!nowHidden));
+    });
 }
 
 function createMobileMenu() {
     const nav = document.querySelector('nav');
+    const pages = [
+        { href: 'index.html', label: 'Home' },
+        { href: 'about.html', label: 'About' },
+        { href: 'achievements.html', label: 'Achievements' },
+        { href: 'contact.html', label: 'Contact' }
+    ];
+
+    // Mark the page we are actually on, rather than always highlighting Home
+    let current = window.location.pathname.split('/').pop();
+    if (!current) current = 'index.html';
+
     const mobileMenu = document.createElement('div');
     mobileMenu.className = 'mobile-menu hidden md:hidden bg-white border-t border-orange-200';
-    mobileMenu.innerHTML = `
-        <div class="px-4 py-2 space-y-1">
-            <a href="index.html" class="block px-3 py-2 text-orange-600 font-medium">Home</a>
-            <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-orange-600">About</a>
-            <a href="achievements.html" class="block px-3 py-2 text-gray-700 hover:text-orange-600">Achievements</a>
-            <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:text-orange-600">Contact</a>
-        </div>
-    `;
+    mobileMenu.id = 'mobile-menu';
+
+    const inner = document.createElement('div');
+    inner.className = 'px-4 py-2 space-y-1';
+
+    pages.forEach(page => {
+        const link = document.createElement('a');
+        link.href = page.href;
+        link.textContent = page.label;
+        const isCurrent = page.href === current;
+        link.className = isCurrent
+            ? 'block px-3 py-2 text-orange-600 font-medium'
+            : 'block px-3 py-2 text-gray-700 hover:text-orange-600';
+        if (isCurrent) link.setAttribute('aria-current', 'page');
+        inner.appendChild(link);
+    });
+
+    mobileMenu.appendChild(inner);
     nav.appendChild(mobileMenu);
 }
 
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
         if (target) {
+            e.preventDefault();
             target.scrollIntoView({
-                behavior: 'smooth',
+                behavior: prefersReducedMotion() ? 'auto' : 'smooth',
                 block: 'start'
             });
         }
@@ -259,9 +340,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Add loading animation
 window.addEventListener('load', function() {
-    // Animate hero elements
+    if (prefersReducedMotion() || typeof anime === 'undefined') return;
+
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+
     anime({
-        targets: '.hero-gradient h1',
+        targets: '.hero-section h1',
         translateY: [50, 0],
         opacity: [0, 1],
         duration: 1000,
@@ -270,7 +355,7 @@ window.addEventListener('load', function() {
     });
 
     anime({
-        targets: '.hero-gradient p',
+        targets: '.hero-section p',
         translateY: [30, 0],
         opacity: [0, 1],
         duration: 800,
@@ -279,7 +364,7 @@ window.addEventListener('load', function() {
     });
 
     anime({
-        targets: '.hero-gradient .flex',
+        targets: '.hero-section .hero-actions',
         translateY: [20, 0],
         opacity: [0, 1],
         duration: 600,
@@ -287,57 +372,6 @@ window.addEventListener('load', function() {
         delay: 1100
     });
 });
-
-// Form validation and submission (for future forms)
-function validateForm(form) {
-    const inputs = form.querySelectorAll('input[required], textarea[required]');
-    let isValid = true;
-
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            input.classList.add('border-red-500');
-            isValid = false;
-        } else {
-            input.classList.remove('border-red-500');
-        }
-    });
-
-    return isValid;
-}
-
-// Show notification
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
-        type === 'success' ? 'bg-green-500' : 'bg-red-500'
-    }`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
-    anime({
-        targets: notification,
-        translateX: [300, 0],
-        opacity: [0, 1],
-        duration: 300,
-        easing: 'easeOutExpo'
-    });
-    
-    // Remove after 3 seconds
-    setTimeout(() => {
-        anime({
-            targets: notification,
-            translateX: [0, 300],
-            opacity: [1, 0],
-            duration: 300,
-            easing: 'easeInExpo',
-            complete: () => {
-                document.body.removeChild(notification);
-            }
-        });
-    }, 3000);
-}
 
 // Utility function for debouncing
 function debounce(func, wait) {
@@ -360,6 +394,8 @@ window.addEventListener('resize', debounce(() => {
         if (mobileMenu) {
             mobileMenu.classList.add('hidden');
         }
+        const button = document.querySelector('.mobile-menu-button');
+        if (button) button.setAttribute('aria-expanded', 'false');
     }
 }, 250));
 
