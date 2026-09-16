@@ -457,8 +457,16 @@
             
             <div class="grid lg:grid-cols-2 gap-12">
                 <div class="animate-fade-in">
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Admissions by Country (2025)</h3>
-                    <div id="admissions-chart" style="height: 400px;"></div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6" id="admissions-heading">Admissions by Country (2025)</h3>
+                    <div id="admissions-chart" style="height: 400px;" role="img"
+                         aria-labelledby="admissions-heading" aria-describedby="admissions-table"></div>
+                    <table id="admissions-table" class="sr-only">
+                        <caption>Graduates admitted to universities, by country, 2025</caption>
+                        <thead>
+                            <tr><th scope="col">Country</th><th scope="col">Students</th></tr>
+                        </thead>
+                        <tbody id="admissions-table-body"></tbody>
+                    </table>
                 </div>
                 
                 <div class="animate-fade-in">
@@ -771,45 +779,100 @@
 
         function initCharts() {
             // University Admissions Chart
+            //
+            // This was a nine-slice pie with a nine-colour legend. Nine countries is
+            // past the point where colour can tell categories apart, five slices were
+            // under 5% each, and the leader lines for those small slices overlapped
+            // into an unreadable stack down the left-hand side.
+            //
+            // A ranked horizontal bar does the same job without any of that: length is
+            // easier to compare than angle, country names sit on the axis where they
+            // cannot collide, and one colour suffices because the bars are already
+            // told apart by their labels.
             const admissionsChart = echarts.init(document.getElementById('admissions-chart'));
+
+            // Ascending order: ECharts draws a category axis bottom-up, so this reads
+            // largest-first on screen.
+            const admissions = [
+                { name: 'Malaysia', value: 1 },
+                { name: 'Qatar', value: 1 },
+                { name: 'China', value: 2 },
+                { name: 'United Arab Emirates', value: 3 },
+                { name: 'European Union', value: 4 },
+                { name: 'South Korea', value: 6 },
+                { name: 'United States', value: 6 },
+                { name: 'United Kingdom', value: 8 },
+                { name: 'Uzbekistan', value: 46 }
+            ];
+
             const admissionsOption = {
+                // left gutter keeps the longest name ("United Arab Emirates") off the
+                // canvas edge, where its first stroke reads as cropped
+                grid: { left: 16, right: 44, top: 8, bottom: 8, containLabel: true },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: function(p) {
+                        return p.name + '<br/><strong>' + p.value + '</strong> student' + (p.value === 1 ? '' : 's');
+                    }
                 },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ['Uzbekistan', 'United States', 'United Kingdom', 'South Korea', 'European Union', 'United Arab Emirates', 'China', 'Qatar', 'Malaysia'],
-                    textStyle: {
-                        color: '#36454F'
+                // Every bar carries its value at the tip, so axis ticks would only
+                // repeat what is already on screen.
+                xAxis: { type: 'value', show: false },
+                yAxis: {
+                    type: 'category',
+                    data: admissions.map(function(d) { return d.name; }),
+                    axisLine: { show: false },
+                    axisTick: { show: false },
+                    axisLabel: {
+                        color: '#36454F',
+                        fontSize: 13,
+                        // One name is long enough to squeeze the bars off the canvas on
+                        // a small phone. Abbreviate it on the axis only — the tooltip
+                        // and the accessible table below still say it in full.
+                        formatter: function(name) {
+                            return name === 'United Arab Emirates' ? 'UAE' : name;
+                        }
                     }
                 },
                 series: [
                     {
-                        name: 'University Admissions',
-                        type: 'pie',
-                        radius: '50%',
-                        data: [{ value: 46, name: 'Uzbekistan', itemStyle: { color: '#CD853F' } },
-                            { value: 6, name: 'United States', itemStyle: { color: '#D2691E' } },
-                            { value: 8, name: 'United Kingdom', itemStyle: { color: '#2F4F4F' } },
-                            { value: 6, name: 'South Korea', itemStyle: { color: '#FFB347' } },
-                            { value: 4, name: 'European Union', itemStyle: { color: '#6B8E23' } },
-                            { value: 3, name: 'United Arab Emirates', itemStyle: { color: '#4682B4' } },
-                            { value: 2, name: 'China', itemStyle: { color: '#B22222' } },
-                            { value: 1, name: 'Qatar', itemStyle: { color: '#8A2BE2' } },
-                            { value: 1, name: 'Malaysia', itemStyle: { color: '#008080' } }],
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
+                        name: 'Admissions',
+                        type: 'bar',
+                        data: admissions.map(function(d) { return d.value; }),
+                        barMaxWidth: 20,
+                        itemStyle: {
+                            color: '#D2691E',
+                            borderRadius: [0, 4, 4, 0]
+                        },
+                        label: {
+                            show: true,
+                            position: 'right',
+                            color: '#6B7280',
+                            fontSize: 12,
+                            fontWeight: 600
+                        },
+                        emphasis: { itemStyle: { color: '#A85316' } }
                     }
                 ]
             };
             admissionsChart.setOption(admissionsOption);
+
+            // The chart renders to a canvas, which screen readers cannot read into.
+            // Mirror the figures as a real table for assistive technology.
+            const admissionsTable = document.getElementById('admissions-table-body');
+            if (admissionsTable) {
+                admissions.slice().reverse().forEach(function(d) {
+                    const row = document.createElement('tr');
+                    const name = document.createElement('th');
+                    name.setAttribute('scope', 'row');
+                    name.textContent = d.name;
+                    const value = document.createElement('td');
+                    value.textContent = d.value;
+                    row.appendChild(name);
+                    row.appendChild(value);
+                    admissionsTable.appendChild(row);
+                });
+            }
 
             // IELTS Score Chart
             const ieltsChart = echarts.init(document.getElementById('ielts-chart'));
